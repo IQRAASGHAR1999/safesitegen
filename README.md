@@ -11,7 +11,7 @@ Machine Learning is the obvious answer to an authoring bottleneck, except that i
 criterion does not transfer. A generated game level has to be *playable*. A generated safety
 scenario has to be **correct against a legal standard** and **sound as instruction**.
 
-SafeSiteGen is a working pipeline for the second problem.
+
 
 ---
 

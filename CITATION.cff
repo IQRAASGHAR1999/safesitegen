@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "SafeSiteGen: verifiable procedural generation of construction safety training scenarios"
+authors:
+  - family-names: Asghar
+    given-names: Iqra
+    email: iqraasghar9692@gmail.com
+version: 0.1.0
+date-released: 2026-09-06
+license: MIT
+repository-code: "https://github.com/IQRAASGHAR1999/safesitegen"
+keywords:
+  - procedural content generation
+  - construction safety
+  - PCGML
+  - neuro-symbolic verification
+  - safety training

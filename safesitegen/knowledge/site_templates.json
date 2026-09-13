@@ -1,0 +1,307 @@
+{
+  "_meta": {
+    "note": "Each template is a coarse occupancy substrate standing in for a captured site model. In the full framework these fields are populated from an IFC model or from a photogrammetric or LiDAR capture; the schema is deliberately identical so the generator does not change.",
+    "units": "metres for plan coordinates, feet for regulatory parameters (US construction convention)",
+    "version": "0.1.0"
+  },
+  "templates": [
+    {
+      "id": "steel_frame_level3",
+      "name": "Steel frame building, level 3 deck",
+      "provenance": "synthetic_substrate",
+      "width": 24,
+      "depth": 16,
+      "grade_elevation_ft": 0.0,
+      "deck_elevation_ft": 30.0,
+      "zones": [
+        {
+          "name": "north_edge",
+          "type": "slab_edge",
+          "x": 0,
+          "y": 0,
+          "w": 24,
+          "d": 2
+        },
+        {
+          "name": "main_deck",
+          "type": "deck",
+          "x": 0,
+          "y": 2,
+          "w": 24,
+          "d": 11
+        },
+        {
+          "name": "access_bay",
+          "type": "access",
+          "x": 0,
+          "y": 13,
+          "w": 6,
+          "d": 3
+        },
+        {
+          "name": "laydown",
+          "type": "laydown",
+          "x": 6,
+          "y": 13,
+          "w": 12,
+          "d": 3
+        },
+        {
+          "name": "south_scaffold",
+          "type": "scaffold_bay",
+          "x": 18,
+          "y": 13,
+          "w": 6,
+          "d": 3
+        }
+      ],
+      "obstacles": [
+        {
+          "x": 8,
+          "y": 6,
+          "w": 1,
+          "d": 1,
+          "asset_type": "steel_column"
+        },
+        {
+          "x": 16,
+          "y": 6,
+          "w": 1,
+          "d": 1,
+          "asset_type": "steel_column"
+        },
+        {
+          "x": 12,
+          "y": 9,
+          "w": 2,
+          "d": 1,
+          "asset_type": "stacked_decking"
+        }
+      ],
+      "entry": [
+        2,
+        14
+      ],
+      "patrol": [
+        [
+          2,
+          14
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          11,
+          9
+        ],
+        [
+          16,
+          7
+        ],
+        [
+          20,
+          4
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          19,
+          12
+        ]
+      ]
+    },
+    {
+      "id": "utility_trench_corridor",
+      "name": "Utility trench corridor, storm drain tie-in",
+      "provenance": "synthetic_substrate",
+      "width": 30,
+      "depth": 12,
+      "grade_elevation_ft": 0.0,
+      "deck_elevation_ft": 0.0,
+      "zones": [
+        {
+          "name": "trench_run",
+          "type": "excavation",
+          "x": 3,
+          "y": 5,
+          "w": 24,
+          "d": 2
+        },
+        {
+          "name": "spoil_side",
+          "type": "laydown",
+          "x": 3,
+          "y": 7,
+          "w": 24,
+          "d": 2
+        },
+        {
+          "name": "north_verge",
+          "type": "work_zone",
+          "x": 0,
+          "y": 0,
+          "w": 30,
+          "d": 5
+        },
+        {
+          "name": "haul_road",
+          "type": "haul_road",
+          "x": 0,
+          "y": 9,
+          "w": 30,
+          "d": 3
+        }
+      ],
+      "obstacles": [
+        {
+          "x": 14,
+          "y": 3,
+          "w": 2,
+          "d": 1,
+          "asset_type": "pipe_stack"
+        },
+        {
+          "x": 24,
+          "y": 10,
+          "w": 3,
+          "d": 2,
+          "asset_type": "excavator"
+        }
+      ],
+      "entry": [
+        1,
+        10
+      ],
+      "patrol": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          11,
+          8
+        ],
+        [
+          16,
+          4
+        ],
+        [
+          21,
+          4
+        ],
+        [
+          26,
+          8
+        ],
+        [
+          28,
+          10
+        ]
+      ]
+    },
+    {
+      "id": "highway_workzone_taper",
+      "name": "Highway work zone, lane closure taper",
+      "provenance": "synthetic_substrate",
+      "width": 40,
+      "depth": 10,
+      "grade_elevation_ft": 0.0,
+      "deck_elevation_ft": 0.0,
+      "zones": [
+        {
+          "name": "live_lane",
+          "type": "haul_road",
+          "x": 0,
+          "y": 0,
+          "w": 40,
+          "d": 3
+        },
+        {
+          "name": "buffer",
+          "type": "work_zone",
+          "x": 0,
+          "y": 3,
+          "w": 40,
+          "d": 2
+        },
+        {
+          "name": "activity_area",
+          "type": "work_zone",
+          "x": 8,
+          "y": 5,
+          "w": 24,
+          "d": 3
+        },
+        {
+          "name": "equipment_pad",
+          "type": "laydown",
+          "x": 0,
+          "y": 8,
+          "w": 40,
+          "d": 2
+        }
+      ],
+      "obstacles": [
+        {
+          "x": 18,
+          "y": 6,
+          "w": 3,
+          "d": 1,
+          "asset_type": "paving_machine"
+        },
+        {
+          "x": 33,
+          "y": 8,
+          "w": 3,
+          "d": 2,
+          "asset_type": "material_truck"
+        }
+      ],
+      "entry": [
+        1,
+        9
+      ],
+      "patrol": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          25,
+          6
+        ],
+        [
+          31,
+          7
+        ],
+        [
+          37,
+          9
+        ]
+      ]
+    }
+  ]
+}

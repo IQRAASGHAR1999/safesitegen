@@ -1,0 +1,240 @@
+{
+  "_meta": {
+    "note": "Hazard classes are aligned to BLS Census of Fatal Occupational Injuries event categories so that class priors can be fitted to real incident frequencies.",
+    "bls_reference": "BLS Census of Fatal Occupational Injuries, 2024 (released 19 February 2026).",
+    "version": "0.1.0"
+  },
+  "classes": [
+    {
+      "id": "fall_unprotected_edge",
+      "name": "Fall from unprotected leading edge",
+      "bls_event": "fall_to_lower_level",
+      "energy_source": "gravitational",
+      "clause": "1926.501(b)(1)",
+      "required_controls": ["guardrail_system", "safety_net", "personal_fall_arrest"],
+      "zone_types": ["slab_edge"],
+      "cue_salience": 0.55,
+      "base_rate": 0.24,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "ironworker", "params": {"fall_height_ft": 18.0}},
+        {"role": "context", "kind": "structure", "asset_type": "deck_edge", "params": {}}
+      ],
+      "params": {"fall_height_ft": [8.0, 32.0]}
+    },
+    {
+      "id": "fall_floor_opening",
+      "name": "Fall through unprotected floor opening",
+      "bls_event": "fall_to_lower_level",
+      "energy_source": "gravitational",
+      "clause": "1926.501(b)(4)(i)",
+      "required_controls": ["hole_cover", "guardrail_system", "personal_fall_arrest"],
+      "zone_types": ["deck", "slab_edge"],
+      "cue_salience": 0.30,
+      "base_rate": 0.09,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "labourer", "params": {"hole_depth_ft": 14.0}},
+        {"role": "context", "kind": "structure", "asset_type": "floor_opening", "params": {}}
+      ],
+      "params": {"hole_depth_ft": [7.0, 26.0]}
+    },
+    {
+      "id": "defective_guardrail",
+      "name": "Guardrail below required top rail height",
+      "bls_event": "fall_to_lower_level",
+      "energy_source": "gravitational",
+      "clause": "1926.502(b)(1)",
+      "required_controls": [],
+      "zone_types": ["slab_edge", "deck"],
+      "cue_salience": 0.22,
+      "base_rate": 0.05,
+      "entities": [
+        {"role": "victim", "kind": "control", "asset_type": "guardrail_system", "params": {"top_rail_height_in": 33.0}}
+      ],
+      "params": {"top_rail_height_in": [28.0, 38.0]}
+    },
+    {
+      "id": "ladder_insufficient_extension",
+      "name": "Access ladder not extended above landing",
+      "bls_event": "fall_to_lower_level",
+      "energy_source": "gravitational",
+      "clause": "1926.1053(b)(1)",
+      "required_controls": ["secured_top_and_grabrail"],
+      "zone_types": ["access", "deck", "excavation"],
+      "cue_salience": 0.40,
+      "base_rate": 0.07,
+      "entities": [
+        {"role": "victim", "kind": "equipment", "asset_type": "portable_ladder", "params": {"extension_above_landing_ft": 0.5}}
+      ],
+      "params": {"extension_above_landing_ft": [0.0, 2.5]}
+    },
+    {
+      "id": "scaffold_missing_guardrail",
+      "name": "Scaffold platform without fall protection",
+      "bls_event": "fall_to_lower_level",
+      "energy_source": "gravitational",
+      "clause": "1926.451(g)(1)",
+      "required_controls": ["guardrail_system", "personal_fall_arrest"],
+      "zone_types": ["scaffold_bay"],
+      "cue_salience": 0.50,
+      "base_rate": 0.08,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "mason", "params": {"platform_height_ft": 16.0}},
+        {"role": "context", "kind": "structure", "asset_type": "scaffold_platform", "params": {}}
+      ],
+      "params": {"platform_height_ft": [11.0, 30.0]}
+    },
+    {
+      "id": "trench_no_protective_system",
+      "name": "Excavation entered without cave-in protection",
+      "bls_event": "caught_in_collapsing_material",
+      "energy_source": "gravitational_soil",
+      "clause": "1926.652(a)(1)",
+      "required_controls": ["trench_shield", "shoring_system", "sloping_benching"],
+      "zone_types": ["excavation"],
+      "cue_salience": 0.45,
+      "base_rate": 0.06,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "pipelayer", "params": {"excavation_depth_ft": 7.5, "soil_type": "type_c"}}
+      ],
+      "params": {"excavation_depth_ft": [5.0, 14.0]}
+    },
+    {
+      "id": "trench_blocked_egress",
+      "name": "Excavation egress beyond lateral travel limit",
+      "bls_event": "caught_in_collapsing_material",
+      "energy_source": "gravitational_soil",
+      "clause": "1926.651(c)(2)",
+      "required_controls": [],
+      "zone_types": ["excavation"],
+      "cue_salience": 0.18,
+      "base_rate": 0.04,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "pipelayer", "params": {"excavation_depth_ft": 6.0, "egress_lateral_travel_ft": 41.0}}
+      ],
+      "params": {"egress_lateral_travel_ft": [26.0, 60.0]}
+    },
+    {
+      "id": "trench_spoil_too_close",
+      "name": "Spoil pile surcharging the excavation edge",
+      "bls_event": "caught_in_collapsing_material",
+      "energy_source": "gravitational_soil",
+      "clause": "1926.651(j)(2)",
+      "required_controls": ["retaining_device"],
+      "zone_types": ["excavation"],
+      "cue_salience": 0.35,
+      "base_rate": 0.04,
+      "entities": [
+        {"role": "victim", "kind": "structure", "asset_type": "spoil_pile", "params": {"distance_from_edge_ft": 0.8}}
+      ],
+      "params": {"distance_from_edge_ft": [0.0, 1.9]}
+    },
+    {
+      "id": "power_line_encroachment",
+      "name": "Equipment encroaching on energised overhead line",
+      "bls_event": "exposure_to_electricity",
+      "energy_source": "electrical",
+      "clause": "1926.1408(a)",
+      "required_controls": ["line_deenergised_and_grounded", "encroachment_prevention_device"],
+      "zone_types": ["laydown", "work_zone", "deck"],
+      "cue_salience": 0.42,
+      "base_rate": 0.07,
+      "entities": [
+        {"role": "victim", "kind": "equipment", "asset_type": "mobile_crane", "params": {"clearance_to_line_ft": 11.0}},
+        {"role": "context", "kind": "environment", "asset_type": "overhead_power_line", "params": {"voltage_kv": 13.2}}
+      ],
+      "params": {"clearance_to_line_ft": [3.0, 19.0]}
+    },
+    {
+      "id": "struck_by_suspended_load",
+      "name": "Worker inside the fall zone of a suspended load",
+      "bls_event": "struck_by_object",
+      "energy_source": "gravitational_kinetic",
+      "clause": "1926.1425(b)",
+      "required_controls": ["designated_rigger"],
+      "zone_types": ["laydown", "deck", "work_zone"],
+      "cue_salience": 0.60,
+      "base_rate": 0.11,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "labourer", "params": {"distance_to_suspended_load_ft": 4.0}},
+        {"role": "context", "kind": "equipment", "asset_type": "suspended_load", "params": {}}
+      ],
+      "params": {"distance_to_suspended_load_ft": [1.0, 9.0]}
+    },
+    {
+      "id": "backing_equipment_no_spotter",
+      "name": "Reversing plant without alarm or spotter",
+      "bls_event": "struck_by_vehicle",
+      "energy_source": "kinetic",
+      "clause": "1926.601(b)(4)",
+      "required_controls": ["reverse_alarm", "spotter"],
+      "zone_types": ["laydown", "work_zone", "haul_road"],
+      "cue_salience": 0.25,
+      "base_rate": 0.08,
+      "entities": [
+        {"role": "victim", "kind": "equipment", "asset_type": "haul_truck", "params": {}},
+        {"role": "context", "kind": "worker", "asset_type": "labourer", "params": {}}
+      ],
+      "params": {}
+    },
+    {
+      "id": "missing_head_protection",
+      "name": "No head protection in an overhead hazard area",
+      "bls_event": "struck_by_object",
+      "energy_source": "gravitational_kinetic",
+      "clause": "1926.100(a)",
+      "required_controls": ["hard_hat"],
+      "zone_types": ["deck", "laydown", "scaffold_bay", "work_zone"],
+      "cue_salience": 0.65,
+      "base_rate": 0.05,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "visitor", "params": {}}
+      ],
+      "params": {}
+    },
+    {
+      "id": "rebar_impalement",
+      "name": "Unguarded protruding reinforcing steel",
+      "bls_event": "struck_by_object",
+      "energy_source": "gravitational",
+      "clause": "1926.701(b)",
+      "required_controls": ["rebar_caps", "protective_cover"],
+      "zone_types": ["deck", "excavation", "work_zone"],
+      "cue_salience": 0.38,
+      "base_rate": 0.03,
+      "entities": [
+        {"role": "victim", "kind": "structure", "asset_type": "rebar_cage", "params": {}}
+      ],
+      "params": {}
+    },
+    {
+      "id": "workzone_traffic_exposure",
+      "name": "Worker exposed to live traffic without positive protection",
+      "bls_event": "struck_by_vehicle",
+      "energy_source": "kinetic",
+      "clause": "1926.201(a)",
+      "required_controls": ["high_visibility_apparel", "positive_protection_barrier"],
+      "zone_types": ["work_zone", "haul_road"],
+      "cue_salience": 0.48,
+      "base_rate": 0.09,
+      "entities": [
+        {"role": "victim", "kind": "worker", "asset_type": "flagger", "params": {}}
+      ],
+      "params": {}
+    }
+  ],
+  "distractors": [
+    {"label": "material_pallet", "asset_type": "material_pallet", "kind": "structure", "salience": 0.5, "params": {}},
+    {"label": "compliant_guardrail", "asset_type": "guardrail_system", "kind": "control", "salience": 0.7,
+     "params": {"top_rail_height_in": 42.0}},
+    {"label": "compliant_ladder", "asset_type": "portable_ladder", "kind": "equipment", "salience": 0.6,
+     "params": {"extension_above_landing_ft": 3.4}},
+    {"label": "alarmed_haul_truck", "asset_type": "haul_truck", "kind": "equipment", "salience": 0.55,
+     "params": {"controls": ["reverse_alarm", "spotter"]}},
+    {"label": "capped_rebar_cage", "asset_type": "rebar_cage", "kind": "structure", "salience": 0.45,
+     "params": {"controls": ["rebar_caps"]}},
+    {"label": "set_back_spoil_pile", "asset_type": "spoil_pile", "kind": "structure", "salience": 0.4,
+     "params": {"distance_from_edge_ft": 4.5}},
+    {"label": "signage_board", "asset_type": "signage_board", "kind": "structure", "salience": 0.6, "params": {}},
+    {"label": "temporary_lighting", "asset_type": "temporary_lighting", "kind": "equipment", "salience": 0.35, "params": {}}
+  ]
+}

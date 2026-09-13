@@ -1,0 +1,693 @@
+{
+  "arms": [
+    {
+      "arm": "A_unconstrained",
+      "use_solver": false,
+      "use_gate": false,
+      "n": 300,
+      "first_pass_validity": 0.0467,
+      "accepted_rate": 0.0467,
+      "mean_attempts": 1.0,
+      "top_failures": [
+        [
+          "PHY.zone_affordance",
+          251
+        ],
+        [
+          "REG.hazard_realised",
+          118
+        ],
+        [
+          "PHY.supported",
+          94
+        ],
+        [
+          "REG.no_unintended_violation",
+          67
+        ],
+        [
+          "PED.difficulty_band",
+          56
+        ],
+        [
+          "PHY.no_interpenetration",
+          28
+        ]
+      ],
+      "accepted_stats": {
+        "n": 14,
+        "validity_rate": 1.0,
+        "class_coverage": 0.7143,
+        "class_entropy": 0.9406,
+        "signature_uniqueness": 1.0,
+        "difficulty_mean": 0.4018,
+        "difficulty_sd": 0.0353,
+        "hazard_diversity_mean": 1.0,
+        "expressive_range": {
+          "bins": 10,
+          "grid": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "coverage": 0.08,
+          "peak_share": 0.21428571428571427,
+          "n": 14
+        }
+      }
+    },
+    {
+      "arm": "B_solver_only",
+      "use_solver": true,
+      "use_gate": false,
+      "n": 300,
+      "first_pass_validity": 0.43,
+      "accepted_rate": 0.43,
+      "mean_attempts": 1.0,
+      "top_failures": [
+        [
+          "REG.hazard_realised",
+          118
+        ],
+        [
+          "REG.no_unintended_violation",
+          67
+        ],
+        [
+          "PED.difficulty_band",
+          19
+        ]
+      ],
+      "accepted_stats": {
+        "n": 129,
+        "validity_rate": 1.0,
+        "class_coverage": 0.9286,
+        "class_entropy": 0.9181,
+        "signature_uniqueness": 0.9922,
+        "difficulty_mean": 0.4245,
+        "difficulty_sd": 0.0696,
+        "hazard_diversity_mean": 1.0,
+        "expressive_range": {
+          "bins": 10,
+          "grid": [
+            [
+              0,
+              0,
+              2,
+              3,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              4,
+              16,
+              23,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              7,
+              18,
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              9,
+              15,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "coverage": 0.21,
+          "peak_share": 0.17829457364341086,
+          "n": 129
+        }
+      }
+    },
+    {
+      "arm": "C_gate_only",
+      "use_solver": false,
+      "use_gate": true,
+      "n": 300,
+      "first_pass_validity": 0.0467,
+      "accepted_rate": 0.26,
+      "mean_attempts": 3.62,
+      "top_failures": [
+        [
+          "PHY.zone_affordance",
+          251
+        ],
+        [
+          "REG.hazard_realised",
+          118
+        ],
+        [
+          "PHY.supported",
+          94
+        ],
+        [
+          "REG.no_unintended_violation",
+          67
+        ],
+        [
+          "PED.difficulty_band",
+          56
+        ],
+        [
+          "PHY.no_interpenetration",
+          28
+        ]
+      ],
+      "accepted_stats": {
+        "n": 78,
+        "validity_rate": 1.0,
+        "class_coverage": 1.0,
+        "class_entropy": 0.8655,
+        "signature_uniqueness": 1.0,
+        "difficulty_mean": 0.3982,
+        "difficulty_sd": 0.0448,
+        "hazard_diversity_mean": 1.0,
+        "expressive_range": {
+          "bins": 10,
+          "grid": [
+            [
+              0,
+              0,
+              0,
+              2,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              4,
+              11,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              13,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              11,
+              5,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              7,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "coverage": 0.16,
+          "peak_share": 0.16666666666666666,
+          "n": 78
+        }
+      }
+    },
+    {
+      "arm": "D_full",
+      "use_solver": true,
+      "use_gate": true,
+      "n": 300,
+      "first_pass_validity": 0.43,
+      "accepted_rate": 0.9433,
+      "mean_attempts": 1.687,
+      "top_failures": [
+        [
+          "REG.hazard_realised",
+          118
+        ],
+        [
+          "REG.no_unintended_violation",
+          67
+        ],
+        [
+          "PED.difficulty_band",
+          19
+        ]
+      ],
+      "accepted_stats": {
+        "n": 283,
+        "validity_rate": 1.0,
+        "class_coverage": 1.0,
+        "class_entropy": 0.9287,
+        "signature_uniqueness": 0.9965,
+        "difficulty_mean": 0.421,
+        "difficulty_sd": 0.0679,
+        "hazard_diversity_mean": 1.0,
+        "expressive_range": {
+          "bins": 10,
+          "grid": [
+            [
+              0,
+              0,
+              2,
+              8,
+              9,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              5,
+              39,
+              41,
+              14,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              14,
+              35,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              19,
+              30,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              10,
+              21,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              3,
+              11,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "coverage": 0.25,
+          "peak_share": 0.14487632508833923,
+          "n": 283
+        }
+      }
+    }
+  ],
+  "fault_detection": {
+    "scenarios_with_faults": 158,
+    "detection_rate": 0.9304,
+    "by_kind": {
+      "phantom_hazard": {
+        "n": 121,
+        "caught": 118,
+        "rate": 0.9752
+      },
+      "push_threshold": {
+        "n": 44,
+        "caught": 36,
+        "rate": 0.8182
+      },
+      "drop_control": {
+        "n": 19,
+        "caught": 16,
+        "rate": 0.8421
+      }
+    }
+  }
+}

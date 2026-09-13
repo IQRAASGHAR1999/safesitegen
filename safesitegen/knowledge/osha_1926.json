@@ -1,0 +1,210 @@
+{
+  "_meta": {
+    "title": "SafeSiteGen machine-checkable rule pack",
+    "source": "Paraphrased summaries of 29 CFR Part 1926 (OSHA construction standards).",
+    "disclaimer": "This is an illustrative research subset for content validation, not a compliance tool. Clause text is paraphrased. Always consult the eCFR for authoritative language.",
+    "ecfr": "https://www.ecfr.gov/current/title-29/subtitle-B/chapter-XVII/part-1926",
+    "version": "0.1.0"
+  },
+  "rules": [
+    {
+      "id": "1926.501(b)(1)",
+      "subpart": "M",
+      "topic": "Fall protection: unprotected sides and edges",
+      "summary": "An employee on a walking or working surface with an unprotected side or edge 6 feet or more above a lower level must be protected by a guardrail system, safety net system, or personal fall arrest system.",
+      "trigger": {"entity_kind": "worker", "context": "edge_exposure"},
+      "predicate": {
+        "kind": "threshold_requires_any_control",
+        "param": "fall_height_ft",
+        "op": ">=",
+        "value": 6.0,
+        "controls_any": ["guardrail_system", "safety_net", "personal_fall_arrest"]
+      },
+      "hazard_class": "fall_unprotected_edge"
+    },
+    {
+      "id": "1926.501(b)(4)(i)",
+      "subpart": "M",
+      "topic": "Fall protection: holes",
+      "summary": "An employee on a walking or working surface must be protected from falling through holes more than 6 feet above a lower level by personal fall arrest systems, covers, or guardrail systems erected around the hole.",
+      "trigger": {"entity_kind": "worker", "context": "hole_exposure"},
+      "predicate": {
+        "kind": "threshold_requires_any_control",
+        "param": "hole_depth_ft",
+        "op": ">=",
+        "value": 6.0,
+        "controls_any": ["hole_cover", "guardrail_system", "personal_fall_arrest"]
+      },
+      "hazard_class": "fall_floor_opening"
+    },
+    {
+      "id": "1926.502(b)(1)",
+      "subpart": "M",
+      "topic": "Guardrail criteria: top rail height",
+      "summary": "The top edge height of top rails must be 42 inches plus or minus 3 inches above the walking or working level.",
+      "trigger": {"entity_kind": "control", "asset_type": "guardrail_system"},
+      "predicate": {
+        "kind": "range",
+        "param": "top_rail_height_in",
+        "min": 39.0,
+        "max": 45.0
+      },
+      "hazard_class": "defective_guardrail"
+    },
+    {
+      "id": "1926.1053(b)(1)",
+      "subpart": "X",
+      "topic": "Ladders: extension above landing",
+      "summary": "When a portable ladder is used to access an upper landing surface, the side rails must extend at least 3 feet above the landing, or the ladder must be secured at the top to a rigid support and a grasping device provided.",
+      "trigger": {"entity_kind": "equipment", "asset_type": "portable_ladder"},
+      "predicate": {
+        "kind": "threshold_or_control",
+        "param": "extension_above_landing_ft",
+        "op": ">=",
+        "value": 3.0,
+        "controls_any": ["secured_top_and_grabrail"]
+      },
+      "hazard_class": "ladder_insufficient_extension"
+    },
+    {
+      "id": "1926.451(g)(1)",
+      "subpart": "L",
+      "topic": "Scaffolds: fall protection",
+      "summary": "Each employee on a scaffold more than 10 feet above a lower level must be protected from falling by a guardrail system or a personal fall arrest system.",
+      "trigger": {"entity_kind": "worker", "context": "scaffold_platform"},
+      "predicate": {
+        "kind": "threshold_requires_any_control",
+        "param": "platform_height_ft",
+        "op": ">",
+        "value": 10.0,
+        "controls_any": ["guardrail_system", "personal_fall_arrest"]
+      },
+      "hazard_class": "scaffold_missing_guardrail"
+    },
+    {
+      "id": "1926.652(a)(1)",
+      "subpart": "P",
+      "topic": "Excavations: cave-in protection",
+      "summary": "Each employee in an excavation must be protected from cave-ins by an adequate protective system, except where the excavation is made entirely in stable rock, or is less than 5 feet deep and a competent person finds no indication of a potential cave-in.",
+      "trigger": {"entity_kind": "worker", "context": "excavation"},
+      "predicate": {
+        "kind": "threshold_requires_any_control",
+        "param": "excavation_depth_ft",
+        "op": ">=",
+        "value": 5.0,
+        "controls_any": ["trench_shield", "shoring_system", "sloping_benching"],
+        "exempt_if": {"param": "soil_type", "equals": "stable_rock"}
+      },
+      "hazard_class": "trench_no_protective_system"
+    },
+    {
+      "id": "1926.651(c)(2)",
+      "subpart": "P",
+      "topic": "Excavations: means of egress",
+      "summary": "A stairway, ladder, ramp, or other safe means of egress must be located in trench excavations 4 feet or more in depth so that no more than 25 feet of lateral travel is required.",
+      "trigger": {"entity_kind": "worker", "context": "excavation"},
+      "predicate": {
+        "kind": "lateral_travel",
+        "depth_param": "excavation_depth_ft",
+        "depth_min": 4.0,
+        "param": "egress_lateral_travel_ft",
+        "op": "<=",
+        "value": 25.0
+      },
+      "hazard_class": "trench_blocked_egress"
+    },
+    {
+      "id": "1926.651(j)(2)",
+      "subpart": "P",
+      "topic": "Excavations: spoil and material placement",
+      "summary": "Employees must be protected from excavated material and equipment that could pose a hazard by falling or rolling into the excavation, by keeping such material at least 2 feet from the edge or by using retaining devices.",
+      "trigger": {"entity_kind": "structure", "asset_type": "spoil_pile"},
+      "predicate": {
+        "kind": "threshold_or_control",
+        "param": "distance_from_edge_ft",
+        "op": ">=",
+        "value": 2.0,
+        "controls_any": ["retaining_device"]
+      },
+      "hazard_class": "trench_spoil_too_close"
+    },
+    {
+      "id": "1926.1408(a)",
+      "subpart": "CC",
+      "topic": "Cranes: power line safety, up to 350 kV",
+      "summary": "Before assembly or operation near a power line, the employer must either de-energise and ground the line or maintain a minimum clearance of 20 feet between the line and any part of the equipment or load, unless a smaller table-based clearance is established.",
+      "trigger": {"entity_kind": "equipment", "asset_type": "mobile_crane"},
+      "predicate": {
+        "kind": "threshold_or_control",
+        "param": "clearance_to_line_ft",
+        "op": ">=",
+        "value": 20.0,
+        "controls_any": ["line_deenergised_and_grounded", "encroachment_prevention_device"]
+      },
+      "hazard_class": "power_line_encroachment"
+    },
+    {
+      "id": "1926.1425(b)",
+      "subpart": "CC",
+      "topic": "Cranes: keeping clear of the load",
+      "summary": "While the operator is not moving a suspended load, no employee may be within the fall zone except for employees engaged in hooking, unhooking, guiding the load, or performing the initial connection.",
+      "trigger": {"entity_kind": "worker", "context": "fall_zone"},
+      "predicate": {
+        "kind": "exclusion_zone",
+        "param": "distance_to_suspended_load_ft",
+        "op": ">=",
+        "value": 10.0,
+        "controls_any": ["designated_rigger"]
+      },
+      "hazard_class": "struck_by_suspended_load"
+    },
+    {
+      "id": "1926.601(b)(4)",
+      "subpart": "O",
+      "topic": "Motor vehicles: reverse signal alarm",
+      "summary": "No employer may use a motor vehicle with an obstructed view to the rear unless it has a reverse signal alarm audible above the surrounding noise level, or the vehicle is backed up only when an observer signals that it is safe to do so.",
+      "trigger": {"entity_kind": "equipment", "asset_type": "haul_truck"},
+      "predicate": {
+        "kind": "requires_any_control",
+        "controls_any": ["reverse_alarm", "spotter"]
+      },
+      "hazard_class": "backing_equipment_no_spotter"
+    },
+    {
+      "id": "1926.100(a)",
+      "subpart": "E",
+      "topic": "Head protection",
+      "summary": "Employees working in areas where there is a possible danger of head injury from impact, falling or flying objects, or electrical shock and burns must be protected by protective helmets.",
+      "trigger": {"entity_kind": "worker", "context": "overhead_hazard_area"},
+      "predicate": {
+        "kind": "requires_any_control",
+        "controls_any": ["hard_hat"]
+      },
+      "hazard_class": "missing_head_protection"
+    },
+    {
+      "id": "1926.701(b)",
+      "subpart": "Q",
+      "topic": "Concrete: reinforcing steel impalement",
+      "summary": "All protruding reinforcing steel onto and into which employees could fall must be guarded to eliminate the hazard of impalement.",
+      "trigger": {"entity_kind": "structure", "asset_type": "rebar_cage"},
+      "predicate": {
+        "kind": "requires_any_control",
+        "controls_any": ["rebar_caps", "protective_cover"]
+      },
+      "hazard_class": "rebar_impalement"
+    },
+    {
+      "id": "1926.201(a)",
+      "subpart": "G",
+      "topic": "Work zones: flagger signalling",
+      "summary": "Signalling by flaggers and the use of flaggers in work zones must conform to Part VI of the Manual on Uniform Traffic Control Devices.",
+      "trigger": {"entity_kind": "worker", "context": "work_zone_traffic"},
+      "predicate": {
+        "kind": "requires_any_control",
+        "controls_any": ["high_visibility_apparel", "positive_protection_barrier"]
+      },
+      "hazard_class": "workzone_traffic_exposure"
+    }
+  ]
+}

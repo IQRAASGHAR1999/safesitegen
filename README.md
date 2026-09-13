@@ -44,6 +44,7 @@ specification
 ```
 
 ![framework](docs/framework.png)
+![demo](docs/demo.mp4)
 
 The generator never writes coordinates. It emits semantics; the solver writes geometry; the gate
 adjudicates. Keeping those three separable is what makes the system checkable.

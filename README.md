@@ -1,6 +1,7 @@
 # SafeSiteGen
 
 **Verifiable procedural generation of construction safety training scenarios.**
+   ![tests](https://github.com/IQRAASGHAR1999/safesitegen/actions/workflows/tests.yml/badge.svg)
 
 Reference implementation for the research proposal *Verifiable Procedural Content Generation for
 Construction Safety Training*. Pure Python standard library, no dependencies, 64 passing tests.

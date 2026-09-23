@@ -1,0 +1,240 @@
+{
+  "formatVersion": "safesitegen/scene-1.0",
+  "scenarioId": "scn_utility_trench_corridor_00000",
+  "site": {
+    "id": "utility_trench_corridor",
+    "name": "Utility trench corridor, storm drain tie-in",
+    "provenance": "synthetic_substrate",
+    "width": 30,
+    "depth": 12,
+    "grade_elevation_ft": 0.0,
+    "deck_elevation_ft": 0.0,
+    "zones": [
+      {
+        "name": "trench_run",
+        "type": "excavation",
+        "x": 3,
+        "y": 5,
+        "w": 24,
+        "d": 2
+      },
+      {
+        "name": "spoil_side",
+        "type": "laydown",
+        "x": 3,
+        "y": 7,
+        "w": 24,
+        "d": 2
+      },
+      {
+        "name": "north_verge",
+        "type": "work_zone",
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "d": 5
+      },
+      {
+        "name": "haul_road",
+        "type": "haul_road",
+        "x": 0,
+        "y": 9,
+        "w": 30,
+        "d": 3
+      }
+    ],
+    "obstacles": [
+      {
+        "x": 14,
+        "y": 3,
+        "w": 2,
+        "d": 1,
+        "asset_type": "pipe_stack"
+      },
+      {
+        "x": 24,
+        "y": 10,
+        "w": 3,
+        "d": 2,
+        "asset_type": "excavator"
+      }
+    ],
+    "entry": [
+      1,
+      10
+    ],
+    "patrol": [
+      {
+        "x": 1,
+        "y": 10
+      },
+      {
+        "x": 6,
+        "y": 8
+      },
+      {
+        "x": 11,
+        "y": 8
+      },
+      {
+        "x": 16,
+        "y": 4
+      },
+      {
+        "x": 21,
+        "y": 4
+      },
+      {
+        "x": 26,
+        "y": 8
+      },
+      {
+        "x": 28,
+        "y": 10
+      }
+    ]
+  },
+  "trade": "pipelayer",
+  "activity": "storm drain tie-in",
+  "difficulty": 0.406,
+  "validated": true,
+  "instances": [
+    {
+      "instanceId": "e1_trench_spoil_too_close",
+      "prefab": "Prefabs/Earthworks/SpoilPile",
+      "assetType": "spoil_pile",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          8.0,
+          0.0,
+          6.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "trench_run",
+      "isDistractor": false,
+      "params": {
+        "distance_from_edge_ft": 1.6
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h1",
+        "hazardClass": "trench_spoil_too_close",
+        "clause": "1926.651(j)(2)",
+        "severity": "serious",
+        "requiredControls": [
+          "retaining_device"
+        ],
+        "cueSalience": 0.35
+      }
+    },
+    {
+      "instanceId": "e2_trench_no_protective_system",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "pipelayer",
+      "kind": "worker",
+      "transform": {
+        "position": [
+          4.0,
+          0.0,
+          5.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "trench_run",
+      "isDistractor": false,
+      "params": {
+        "excavation_depth_ft": 11.8,
+        "soil_type": "type_c",
+        "context": "excavation"
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h2",
+        "hazardClass": "trench_no_protective_system",
+        "clause": "1926.652(a)(1)",
+        "severity": "serious",
+        "requiredControls": [
+          "trench_shield",
+          "shoring_system",
+          "sloping_benching"
+        ],
+        "cueSalience": 0.45
+      }
+    },
+    {
+      "instanceId": "e3_dist",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "signage_board",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          15.0,
+          0.0,
+          2.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": true,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e4_dist",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "material_pallet",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          24.0,
+          0.0,
+          3.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": true,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e5_dist",
+      "prefab": "Prefabs/Concrete/RebarCage",
+      "assetType": "rebar_cage",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          20.0,
+          0.0,
+          8.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "spoil_side",
+      "isDistractor": true,
+      "params": {},
+      "controls": [
+        "rebar_caps"
+      ],
+      "scoring": null
+    }
+  ],
+  "answerKey": [
+    {
+      "hazardId": "h1",
+      "entityId": "e1_trench_spoil_too_close",
+      "hazardClass": "trench_spoil_too_close",
+      "clause": "1926.651(j)(2)"
+    },
+    {
+      "hazardId": "h2",
+      "entityId": "e2_trench_no_protective_system",
+      "hazardClass": "trench_no_protective_system",
+      "clause": "1926.652(a)(1)"
+    }
+  ]
+}

@@ -1,35 +1,9 @@
-"""First-person 3D training environment.
-
-``export.write_viewer`` produces a plan view for inspecting a scenario. This
-module produces the thing a trainee would actually use: a walkable site rendered
-in real time, in which the trainee looks around, clicks on what they believe is
-a hazard, and is scored against the answer key the validation gate already
-verified.
-
-It is a single self-contained HTML file with the scene embedded inline, no
-libraries, no build step, no network. Rendering is a hand-written painter's
-algorithm over the same ``scene_unity.json`` contract the Unity importer reads,
-which is the point: the runtime contract is engine agnostic, and this is one
-renderer of it rather than the renderer.
-"""
-
-from __future__ import annotations
-
-import json
-from pathlib import Path
-from typing import Dict, Optional
-
-from .export import to_unity_scene
-from .schema import Scenario
-from .site import SiteModel
-from .validate import ValidationReport
-
-_TEMPLATE = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SafeSiteGen training environment &middot; __SCENARIO_ID__</title>
+<title>SafeSiteGen training environment &middot; scn_utility_trench_corridor_00000</title>
 <style>
   :root { --ink:#101820; --muted:#7c8794; --line:#2b3642; --hazard:#e0453f;
           --ok:#37b26d; --warn:#e8a33d; --panel:#141c24; }
@@ -84,8 +58,8 @@ _TEMPLATE = r"""<!DOCTYPE html>
 <div id="crosshair"></div>
 
 <div class="hud" id="top">
-  <h1>__SCENARIO_ID__</h1>
-  <div class="meta">__SITE_NAME__ &middot; __TRADE__, __ACTIVITY__<br/>
+  <h1>scn_utility_trench_corridor_00000</h1>
+  <div class="meta">Utility trench corridor, storm drain tie-in &middot; pipelayer, storm drain tie-in<br/>
   Walk the site and click every hazard you can find.</div>
 </div>
 
@@ -110,31 +84,11 @@ _TEMPLATE = r"""<!DOCTYPE html>
 </div></div>
 
 <script>
-const DATA = __DATA__;
+const DATA = {"scene": {"formatVersion": "safesitegen/scene-1.0", "scenarioId": "scn_utility_trench_corridor_00000", "site": {"id": "utility_trench_corridor", "name": "Utility trench corridor, storm drain tie-in", "provenance": "synthetic_substrate", "width": 30, "depth": 12, "grade_elevation_ft": 0.0, "deck_elevation_ft": 0.0, "zones": [{"name": "trench_run", "type": "excavation", "x": 3, "y": 5, "w": 24, "d": 2}, {"name": "spoil_side", "type": "laydown", "x": 3, "y": 7, "w": 24, "d": 2}, {"name": "north_verge", "type": "work_zone", "x": 0, "y": 0, "w": 30, "d": 5}, {"name": "haul_road", "type": "haul_road", "x": 0, "y": 9, "w": 30, "d": 3}], "obstacles": [{"x": 14, "y": 3, "w": 2, "d": 1, "asset_type": "pipe_stack"}, {"x": 24, "y": 10, "w": 3, "d": 2, "asset_type": "excavator"}], "entry": [1, 10], "patrol": [{"x": 1, "y": 10}, {"x": 6, "y": 8}, {"x": 11, "y": 8}, {"x": 16, "y": 4}, {"x": 21, "y": 4}, {"x": 26, "y": 8}, {"x": 28, "y": 10}]}, "trade": "pipelayer", "activity": "storm drain tie-in", "difficulty": 0.441, "validated": true, "instances": [{"instanceId": "e1_trench_no_protective_system", "prefab": "Prefabs/Generic/Placeholder", "assetType": "pipelayer", "kind": "worker", "transform": {"position": [4.0, 0.0, 5.0], "rotationY": 0.0}, "zone": "trench_run", "isDistractor": false, "params": {"excavation_depth_ft": 12.6, "soil_type": "type_c", "context": "excavation"}, "controls": [], "scoring": {"hazardId": "h1", "hazardClass": "trench_no_protective_system", "clause": "1926.652(a)(1)", "severity": "serious", "requiredControls": ["trench_shield", "shoring_system", "sloping_benching"], "cueSalience": 0.45}}, {"instanceId": "e2_power_line_encroachment", "prefab": "Prefabs/Plant/MobileCrane", "assetType": "mobile_crane", "kind": "equipment", "transform": {"position": [27.0, 0.0, 1.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": false, "params": {"clearance_to_line_ft": 15.1}, "controls": [], "scoring": {"hazardId": "h2", "hazardClass": "power_line_encroachment", "clause": "1926.1408(a)", "severity": "fatal", "requiredControls": ["line_deenergised_and_grounded", "encroachment_prevention_device"], "cueSalience": 0.42}}, {"instanceId": "e3_ctx", "prefab": "Prefabs/Utilities/OverheadLine", "assetType": "overhead_power_line", "kind": "environment", "transform": {"position": [11.0, 0.0, 6.0], "rotationY": 0.0}, "zone": "trench_run", "isDistractor": false, "params": {"voltage_kv": 13.2}, "controls": [], "scoring": null}, {"instanceId": "e4_struck_by_suspended_load", "prefab": "Prefabs/Generic/Placeholder", "assetType": "labourer", "kind": "worker", "transform": {"position": [3.0, 0.0, 0.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": false, "params": {"distance_to_suspended_load_ft": 4.4, "context": "fall_zone"}, "controls": [], "scoring": {"hazardId": "h3", "hazardClass": "struck_by_suspended_load", "clause": "1926.1425(b)", "severity": "serious", "requiredControls": ["designated_rigger"], "cueSalience": 0.6}}, {"instanceId": "e5_ctx", "prefab": "Prefabs/Rigging/SuspendedLoad", "assetType": "suspended_load", "kind": "equipment", "transform": {"position": [9.0, 0.0, 0.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": false, "params": {}, "controls": [], "scoring": null}, {"instanceId": "e6_dist", "prefab": "Prefabs/Concrete/RebarCage", "assetType": "rebar_cage", "kind": "structure", "transform": {"position": [20.0, 0.0, 7.0], "rotationY": 0.0}, "zone": "spoil_side", "isDistractor": true, "params": {}, "controls": ["rebar_caps"], "scoring": null}, {"instanceId": "e7_dist", "prefab": "Prefabs/Generic/Placeholder", "assetType": "temporary_lighting", "kind": "equipment", "transform": {"position": [8.0, 0.0, 2.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": true, "params": {}, "controls": [], "scoring": null}, {"instanceId": "e8_dist", "prefab": "Prefabs/Generic/Placeholder", "assetType": "signage_board", "kind": "structure", "transform": {"position": [13.0, 0.0, 3.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": true, "params": {}, "controls": [], "scoring": null}], "answerKey": [{"hazardId": "h1", "entityId": "e1_trench_no_protective_system", "hazardClass": "trench_no_protective_system", "clause": "1926.652(a)(1)"}, {"hazardId": "h2", "entityId": "e2_power_line_encroachment", "hazardClass": "power_line_encroachment", "clause": "1926.1408(a)"}, {"hazardId": "h3", "entityId": "e4_struck_by_suspended_load", "hazardClass": "struck_by_suspended_load", "clause": "1926.1425(b)"}]}, "report": {"scenario_id": "scn_utility_trench_corridor_00000", "passed": true, "difficulty": 0.441, "metrics": {"n_entities": 8, "n_hazards": 3, "n_distractors": 3, "hazard_classes": ["power_line_encroachment", "struck_by_suspended_load", "trench_no_protective_system"], "signature": "ee68212dced1a9e9"}, "checks": [{"check_id": "SCH.wellformed", "layer": "schema", "status": "pass", "detail": "scenario graph is well formed", "clause": null, "entity": null}, {"check_id": "REG.hazard_realised", "layer": "regulatory", "status": "pass", "detail": "trench_no_protective_system is present on e1_trench_no_protective_system as declared", "clause": "1926.652(a)(1)", "entity": "e1_trench_no_protective_system"}, {"check_id": "REG.hazard_realised", "layer": "regulatory", "status": "pass", "detail": "power_line_encroachment is present on e2_power_line_encroachment as declared", "clause": "1926.1408(a)", "entity": "e2_power_line_encroachment"}, {"check_id": "REG.hazard_realised", "layer": "regulatory", "status": "pass", "detail": "struck_by_suspended_load is present on e4_struck_by_suspended_load as declared", "clause": "1926.1425(b)", "entity": "e4_struck_by_suspended_load"}, {"check_id": "REG.no_unintended_violation", "layer": "regulatory", "status": "pass", "detail": "no unlabelled regulatory violations in the scene", "clause": null, "entity": null}, {"check_id": "PHY.placed", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.in_bounds", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.no_overlap", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.supported", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.reachable", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.no_interpenetration", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.zone_affordance", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PED.hazard_count", "layer": "pedagogical", "status": "pass", "detail": "3 teaching points", "clause": null, "entity": null}, {"check_id": "PED.cue_perceivable", "layer": "pedagogical", "status": "pass", "detail": "every teaching point is visible from the trainee route", "clause": null, "entity": null}, {"check_id": "PED.distractor_present", "layer": "pedagogical", "status": "pass", "detail": "3 distractors", "clause": null, "entity": null}, {"check_id": "PED.hazard_separation", "layer": "pedagogical", "status": "pass", "detail": "teaching points are spatially separated", "clause": null, "entity": null}, {"check_id": "PED.curriculum_coverage", "layer": "pedagogical", "status": "pass", "detail": "all requested hazard classes delivered", "clause": null, "entity": null}, {"check_id": "PED.difficulty_band", "layer": "pedagogical", "status": "pass", "detail": "difficulty 0.44 within band of 0.44", "clause": null, "entity": null}]}};
 const scene = DATA.scene, site = scene.site;
 
 /* ---------------------------------------------------------------- state */
-const cam = { x: 0, y: 1.72, z: 0, yaw: 0, pitch: -0.18 };
-
-/* Spawn outside the site looking in, then step back until nothing is in your
-   face. Standing inside an object makes the near-plane blow it up to fill the
-   screen, which is what a naive entry-point spawn does on a dense scene. */
-(function placeCamera() {
-  const cx = site.width / 2, cz = site.depth / 2;
-  const ex = site.entry[0] + 0.5, ez = site.entry[1] + 0.5;
-  let vx = ex - cx, vz = ez - cz;
-  const m = Math.hypot(vx, vz) || 1;
-  vx /= m; vz /= m;
-  for (let back = 3; back <= 14; back += 1) {
-    const px = ex + vx * back, pz = ez + vz * back;
-    const clear = scene.instances.every(i => Math.hypot(
-      i.transform.position[0] + 0.5 - px, i.transform.position[2] + 0.5 - pz) > 2.5);
-    if (clear) { cam.x = px; cam.z = pz; break; }
-    cam.x = px; cam.z = pz;
-  }
-  // forward is (sin yaw, cos yaw), so aiming at a point is atan2(dx, dz)
-  cam.yaw = Math.atan2(cx - cam.x, cz - cam.z);
-})();
+const cam = { x: site.entry[0] + 0.5, y: 1.68, z: site.entry[1] + 0.5, yaw: 0, pitch: 0 };
 const keys = {};
 const flagged = new Set();
 const answer = {};
@@ -145,15 +99,15 @@ document.getElementById("total").textContent = scene.answerKey.length;
 
 /* ------------------------------------------------------------- geometry */
 const PALETTE = {
-  worker:     { c: "#e8b84b", h: 1.75, w: 0.75 },
+  worker:     { c: "#e8b84b", h: 1.75, w: 0.55 },
   equipment:  { c: "#7fa6c9", h: 2.20, w: 1.30 },
   structure:  { c: "#a2adb8", h: 1.10, w: 1.10 },
   control:    { c: "#6fbf8f", h: 1.05, w: 1.60 },
   environment:{ c: "#b79ccf", h: 4.50, w: 0.60 }
 };
 const ZONE_COLOUR = {
-  slab_edge:"#6b5a3f", deck:"#4a555f", access:"#41573f", laydown:"#5b5340",
-  excavation:"#5c4a35", work_zone:"#3f4d63", scaffold_bay:"#5a4256", haul_road:"#39424b"
+  slab_edge:"#3a3228", deck:"#2a323a", access:"#28332c", laydown:"#33302a",
+  excavation:"#2e2823", work_zone:"#262e38", scaffold_bay:"#332b33", haul_road:"#242a30"
 };
 
 function project(wx, wy, wz, W, H) {
@@ -164,7 +118,7 @@ function project(wx, wy, wz, W, H) {
   const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
   let ry = dy * cp - rz * sp;
   rz = dy * sp + rz * cp;
-  if (rz < 0.55) return null;
+  if (rz < 0.12) return null;
   const f = (H * 0.9) / rz;
   return { x: W / 2 + rx * f, y: H / 2 - ry * f, d: rz, s: f };
 }
@@ -183,22 +137,13 @@ function resize() { cv.width = innerWidth; cv.height = innerHeight; }
 addEventListener("resize", resize); resize();
 
 let pickable = [];
-let labels = [];
 
 function draw() {
   const W = cv.width, H = cv.height;
 
   const sky = g.createLinearGradient(0, 0, 0, H);
-  sky.addColorStop(0, "#16212c"); sky.addColorStop(0.62, "#31434f"); sky.addColorStop(1, "#3d4b52");
+  sky.addColorStop(0, "#16212c"); sky.addColorStop(0.55, "#2a3a48"); sky.addColorStop(1, "#1a232c");
   g.fillStyle = sky; g.fillRect(0, 0, W, H);
-
-  // ground below the horizon, so the site sits on something
-  const horizon = H / 2 + Math.tan(cam.pitch) * (H * 0.9);
-  if (horizon < H) {
-    const gnd = g.createLinearGradient(0, horizon, 0, H);
-    gnd.addColorStop(0, "#2b3138"); gnd.addColorStop(1, "#191f25");
-    g.fillStyle = gnd; g.fillRect(0, Math.max(0, horizon), W, H - Math.max(0, horizon));
-  }
 
   const quads = [];
 
@@ -224,29 +169,20 @@ function draw() {
                  hazard: inst.scoring !== null });
   }
 
-  // An object closer than about a metre cannot be rendered sensibly by a
-  // billboard projection: it covers the screen and hides everything behind it.
-  const visible = quads.filter(q => q.kind === "zone" || q.d > 1.1);
-
-  visible.sort((a, b) => b.d - a.d);
-  // both are rebuilt every frame; leaving either to accumulate paints the
-  // screen with stale labels from previous frames
+  quads.sort((a, b) => b.d - a.d);
   pickable = [];
-  labels = [];
 
-  for (const q of visible) {
+  for (const q of quads) {
     if (q.kind === "zone") {
       g.beginPath();
       q.pts.forEach((p, i) => i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y));
       g.closePath();
       g.fillStyle = q.fill; g.fill();
-      g.strokeStyle = "rgba(255,255,255,.16)"; g.lineWidth = 1; g.stroke();
+      g.strokeStyle = "rgba(255,255,255,.07)"; g.lineWidth = 1; g.stroke();
     } else {
       drawBox(q, W, H);
     }
   }
-
-  drawLabels(g);
 }
 
 function dist(x, z) { return Math.hypot(x - cam.x, z - cam.z); }
@@ -257,9 +193,8 @@ function drawBox(q, W, H) {
   const top = project(q.x, q.h, q.z, W, H);
   if (!base || !top) return;
 
-  let wpx = half * base.s * 2;
-  let hpx = base.y - top.y;
-  if (wpx > W * 1.8 || hpx > H * 2.2) return;   // too close to draw meaningfully
+  const wpx = half * base.s * 2;
+  const hpx = base.y - top.y;
   const x0 = base.x - wpx / 2, y0 = top.y;
 
   const fog = Math.max(0.35, Math.min(1, 1 - q.d / 52));
@@ -278,27 +213,12 @@ function drawBox(q, W, H) {
   }
 
   if (q.d < 26) {
-    labels.push({ text: q.label.replace(/_/g, " "), x: base.x, y: y0 - 7, d: q.d, fog });
+    g.fillStyle = `rgba(214,226,238,${Math.min(0.75, fog)})`;
+    g.font = "11px Helvetica";
+    g.textAlign = "center";
+    g.fillText(q.label.replace(/_/g, " "), base.x, y0 - 7);
+    g.textAlign = "start";
   }
-}
-
-/* Labels are drawn last, nearest first, and any that would overlap one already
-   placed is dropped. Two colliding labels are worse than one missing label. */
-function drawLabels(g) {
-  const placed = [];
-  g.font = "11px Helvetica";
-  g.textAlign = "center";
-  for (const L of labels.slice().sort((a, b) => a.d - b.d)) {
-    const w = g.measureText(L.text).width;
-    const box = { x0: L.x - w / 2 - 3, y0: L.y - 11, x1: L.x + w / 2 + 3, y1: L.y + 3 };
-    if (placed.some(p => !(box.x1 < p.x0 || box.x0 > p.x1 || box.y1 < p.y0 || box.y0 > p.y1))) continue;
-    placed.push(box);
-    g.fillStyle = "rgba(12,18,24,.55)";
-    g.fillRect(box.x0, box.y0, box.x1 - box.x0, box.y1 - box.y0);
-    g.fillStyle = `rgba(222,232,242,${Math.min(0.92, L.fog + 0.25)})`;
-    g.fillText(L.text, L.x, L.y);
-  }
-  g.textAlign = "start";
 }
 
 /* --------------------------------------------------------------- input */
@@ -328,11 +248,10 @@ function step() {
     const sp = keys["shift"] ? 0.18 : 0.09;
     const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
     let fx = 0, fz = 0;
-    // forward (sy, cy), right (cy, -sy): must match the rotation in project()
-    if (keys["w"] || keys["arrowup"])    { fx += sy; fz += cy; }
-    if (keys["s"] || keys["arrowdown"])  { fx -= sy; fz -= cy; }
-    if (keys["a"] || keys["arrowleft"])  { fx -= cy; fz += sy; }
-    if (keys["d"] || keys["arrowright"]) { fx += cy; fz -= sy; }
+    if (keys["w"] || keys["arrowup"]) { fx += cy; fz -= sy; }
+    if (keys["s"] || keys["arrowdown"]) { fx -= cy; fz += sy; }
+    if (keys["a"] || keys["arrowleft"]) { fx -= sy; fz -= cy; }
+    if (keys["d"] || keys["arrowright"]) { fx += sy; fz += cy; }
     const m = Math.hypot(fx, fz);
     if (m > 0) {
       cam.x = Math.max(-4, Math.min(site.width + 4, cam.x + (fx / m) * sp));
@@ -406,25 +325,3 @@ step();
 </script>
 </body>
 </html>
-"""
-
-
-def write_environment(
-    path: Path,
-    scenario: Scenario,
-    site: SiteModel,
-    report: ValidationReport,
-) -> Path:
-    """Write the walkable training environment for one validated scenario."""
-    scene = to_unity_scene(scenario, site, report)
-    payload = json.dumps({"scene": scene, "report": report.to_dict()})
-    html = (
-        _TEMPLATE
-        .replace("__DATA__", payload)
-        .replace("__SCENARIO_ID__", scenario.id)
-        .replace("__SITE_NAME__", site.name)
-        .replace("__TRADE__", scenario.trade.replace("_", " "))
-        .replace("__ACTIVITY__", scenario.activity)
-    )
-    path.write_text(html, encoding="utf-8")
-    return path

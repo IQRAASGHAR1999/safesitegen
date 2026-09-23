@@ -176,6 +176,13 @@ class TestEnvironmentExport(unittest.TestCase):
             self.assertNotIn("http://", html)
             self.assertNotIn("https://", html)
 
+    def test_per_frame_buffers_are_reset(self):
+        """Regression: labels accumulated across frames and painted over the scene."""
+        from safesitegen.environment import _TEMPLATE
+        draw = _TEMPLATE.split("function draw()")[1].split("function dist(")[0]
+        for buf in ("pickable = []", "labels = []"):
+            self.assertIn(buf, draw, f"{buf} must be reset inside draw()")
+
     def test_scene_contract_uses_unity_safe_patrol_shape(self):
         site = SiteModel.load("steel_frame_level3").to_dict()
         self.assertTrue(all(isinstance(p, dict) and "x" in p and "y" in p

@@ -1,0 +1,162 @@
+{
+  "scenario_id": "scn_utility_trench_corridor_00000",
+  "passed": true,
+  "difficulty": 0.441,
+  "metrics": {
+    "n_entities": 8,
+    "n_hazards": 3,
+    "n_distractors": 3,
+    "hazard_classes": [
+      "power_line_encroachment",
+      "struck_by_suspended_load",
+      "trench_no_protective_system"
+    ],
+    "signature": "ee68212dced1a9e9"
+  },
+  "checks": [
+    {
+      "check_id": "SCH.wellformed",
+      "layer": "schema",
+      "status": "pass",
+      "detail": "scenario graph is well formed",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "REG.hazard_realised",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "trench_no_protective_system is present on e1_trench_no_protective_system as declared",
+      "clause": "1926.652(a)(1)",
+      "entity": "e1_trench_no_protective_system"
+    },
+    {
+      "check_id": "REG.hazard_realised",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "power_line_encroachment is present on e2_power_line_encroachment as declared",
+      "clause": "1926.1408(a)",
+      "entity": "e2_power_line_encroachment"
+    },
+    {
+      "check_id": "REG.hazard_realised",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "struck_by_suspended_load is present on e4_struck_by_suspended_load as declared",
+      "clause": "1926.1425(b)",
+      "entity": "e4_struck_by_suspended_load"
+    },
+    {
+      "check_id": "REG.no_unintended_violation",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "no unlabelled regulatory violations in the scene",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.placed",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.in_bounds",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.no_overlap",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.supported",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.reachable",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.no_interpenetration",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.zone_affordance",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.hazard_count",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "3 teaching points",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.cue_perceivable",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "every teaching point is visible from the trainee route",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.distractor_present",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "3 distractors",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.hazard_separation",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "teaching points are spatially separated",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.curriculum_coverage",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "all requested hazard classes delivered",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.difficulty_band",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "difficulty 0.44 within band of 0.44",
+      "clause": null,
+      "entity": null
+    }
+  ]
+}

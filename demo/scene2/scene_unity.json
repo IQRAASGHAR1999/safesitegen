@@ -1,0 +1,318 @@
+{
+  "formatVersion": "safesitegen/scene-1.0",
+  "scenarioId": "scn_utility_trench_corridor_00000",
+  "site": {
+    "id": "utility_trench_corridor",
+    "name": "Utility trench corridor, storm drain tie-in",
+    "provenance": "synthetic_substrate",
+    "width": 30,
+    "depth": 12,
+    "grade_elevation_ft": 0.0,
+    "deck_elevation_ft": 0.0,
+    "zones": [
+      {
+        "name": "trench_run",
+        "type": "excavation",
+        "x": 3,
+        "y": 5,
+        "w": 24,
+        "d": 2
+      },
+      {
+        "name": "spoil_side",
+        "type": "laydown",
+        "x": 3,
+        "y": 7,
+        "w": 24,
+        "d": 2
+      },
+      {
+        "name": "north_verge",
+        "type": "work_zone",
+        "x": 0,
+        "y": 0,
+        "w": 30,
+        "d": 5
+      },
+      {
+        "name": "haul_road",
+        "type": "haul_road",
+        "x": 0,
+        "y": 9,
+        "w": 30,
+        "d": 3
+      }
+    ],
+    "obstacles": [
+      {
+        "x": 14,
+        "y": 3,
+        "w": 2,
+        "d": 1,
+        "asset_type": "pipe_stack"
+      },
+      {
+        "x": 24,
+        "y": 10,
+        "w": 3,
+        "d": 2,
+        "asset_type": "excavator"
+      }
+    ],
+    "entry": [
+      1,
+      10
+    ],
+    "patrol": [
+      {
+        "x": 1,
+        "y": 10
+      },
+      {
+        "x": 6,
+        "y": 8
+      },
+      {
+        "x": 11,
+        "y": 8
+      },
+      {
+        "x": 16,
+        "y": 4
+      },
+      {
+        "x": 21,
+        "y": 4
+      },
+      {
+        "x": 26,
+        "y": 8
+      },
+      {
+        "x": 28,
+        "y": 10
+      }
+    ]
+  },
+  "trade": "pipelayer",
+  "activity": "storm drain tie-in",
+  "difficulty": 0.441,
+  "validated": true,
+  "instances": [
+    {
+      "instanceId": "e1_trench_no_protective_system",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "pipelayer",
+      "kind": "worker",
+      "transform": {
+        "position": [
+          4.0,
+          0.0,
+          5.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "trench_run",
+      "isDistractor": false,
+      "params": {
+        "excavation_depth_ft": 12.6,
+        "soil_type": "type_c",
+        "context": "excavation"
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h1",
+        "hazardClass": "trench_no_protective_system",
+        "clause": "1926.652(a)(1)",
+        "severity": "serious",
+        "requiredControls": [
+          "trench_shield",
+          "shoring_system",
+          "sloping_benching"
+        ],
+        "cueSalience": 0.45
+      }
+    },
+    {
+      "instanceId": "e2_power_line_encroachment",
+      "prefab": "Prefabs/Plant/MobileCrane",
+      "assetType": "mobile_crane",
+      "kind": "equipment",
+      "transform": {
+        "position": [
+          27.0,
+          0.0,
+          1.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": false,
+      "params": {
+        "clearance_to_line_ft": 15.1
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h2",
+        "hazardClass": "power_line_encroachment",
+        "clause": "1926.1408(a)",
+        "severity": "fatal",
+        "requiredControls": [
+          "line_deenergised_and_grounded",
+          "encroachment_prevention_device"
+        ],
+        "cueSalience": 0.42
+      }
+    },
+    {
+      "instanceId": "e3_ctx",
+      "prefab": "Prefabs/Utilities/OverheadLine",
+      "assetType": "overhead_power_line",
+      "kind": "environment",
+      "transform": {
+        "position": [
+          11.0,
+          0.0,
+          6.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "trench_run",
+      "isDistractor": false,
+      "params": {
+        "voltage_kv": 13.2
+      },
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e4_struck_by_suspended_load",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "labourer",
+      "kind": "worker",
+      "transform": {
+        "position": [
+          3.0,
+          0.0,
+          0.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": false,
+      "params": {
+        "distance_to_suspended_load_ft": 4.4,
+        "context": "fall_zone"
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h3",
+        "hazardClass": "struck_by_suspended_load",
+        "clause": "1926.1425(b)",
+        "severity": "serious",
+        "requiredControls": [
+          "designated_rigger"
+        ],
+        "cueSalience": 0.6
+      }
+    },
+    {
+      "instanceId": "e5_ctx",
+      "prefab": "Prefabs/Rigging/SuspendedLoad",
+      "assetType": "suspended_load",
+      "kind": "equipment",
+      "transform": {
+        "position": [
+          9.0,
+          0.0,
+          0.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": false,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e6_dist",
+      "prefab": "Prefabs/Concrete/RebarCage",
+      "assetType": "rebar_cage",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          20.0,
+          0.0,
+          7.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "spoil_side",
+      "isDistractor": true,
+      "params": {},
+      "controls": [
+        "rebar_caps"
+      ],
+      "scoring": null
+    },
+    {
+      "instanceId": "e7_dist",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "temporary_lighting",
+      "kind": "equipment",
+      "transform": {
+        "position": [
+          8.0,
+          0.0,
+          2.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": true,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e8_dist",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "signage_board",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          13.0,
+          0.0,
+          3.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_verge",
+      "isDistractor": true,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    }
+  ],
+  "answerKey": [
+    {
+      "hazardId": "h1",
+      "entityId": "e1_trench_no_protective_system",
+      "hazardClass": "trench_no_protective_system",
+      "clause": "1926.652(a)(1)"
+    },
+    {
+      "hazardId": "h2",
+      "entityId": "e2_power_line_encroachment",
+      "hazardClass": "power_line_encroachment",
+      "clause": "1926.1408(a)"
+    },
+    {
+      "hazardId": "h3",
+      "entityId": "e4_struck_by_suspended_load",
+      "hazardClass": "struck_by_suspended_load",
+      "clause": "1926.1425(b)"
+    }
+  ]
+}

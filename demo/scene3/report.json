@@ -1,0 +1,153 @@
+{
+  "scenario_id": "scn_steel_frame_level3_00008",
+  "passed": true,
+  "difficulty": 0.353,
+  "metrics": {
+    "n_entities": 7,
+    "n_hazards": 2,
+    "n_distractors": 3,
+    "hazard_classes": [
+      "fall_floor_opening",
+      "fall_unprotected_edge"
+    ],
+    "signature": "631393b05f8fd4e2"
+  },
+  "checks": [
+    {
+      "check_id": "SCH.wellformed",
+      "layer": "schema",
+      "status": "pass",
+      "detail": "scenario graph is well formed",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "REG.hazard_realised",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "fall_unprotected_edge is present on e1_fall_unprotected_edge as declared",
+      "clause": "1926.501(b)(1)",
+      "entity": "e1_fall_unprotected_edge"
+    },
+    {
+      "check_id": "REG.hazard_realised",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "fall_floor_opening is present on e3_fall_floor_opening as declared",
+      "clause": "1926.501(b)(4)(i)",
+      "entity": "e3_fall_floor_opening"
+    },
+    {
+      "check_id": "REG.no_unintended_violation",
+      "layer": "regulatory",
+      "status": "pass",
+      "detail": "no unlabelled regulatory violations in the scene",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.placed",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.in_bounds",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.no_overlap",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.supported",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.reachable",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.no_interpenetration",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PHY.zone_affordance",
+      "layer": "physical",
+      "status": "pass",
+      "detail": "satisfied for all entities",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.hazard_count",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "2 teaching points",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.cue_perceivable",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "every teaching point is visible from the trainee route",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.distractor_present",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "3 distractors",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.hazard_separation",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "teaching points are spatially separated",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.curriculum_coverage",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "all requested hazard classes delivered",
+      "clause": null,
+      "entity": null
+    },
+    {
+      "check_id": "PED.difficulty_band",
+      "layer": "pedagogical",
+      "status": "pass",
+      "detail": "difficulty 0.35 within band of 0.35",
+      "clause": null,
+      "entity": null
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "id": "scn_utility_trench_corridor_00000",
+  "site_template": "utility_trench_corridor",
+  "trade": "pipelayer",
+  "activity": "storm drain tie-in",
+  "entities": [
+    {
+      "id": "e1_trench_spoil_too_close",
+      "kind": "structure",
+      "asset_type": "spoil_pile",
+      "params": {
+        "distance_from_edge_ft": 1.6,
+        "controls": []
+      },
+      "x": 8.0,
+      "y": 6.0,
+      "level_ft": 0.0,
+      "zone": "trench_run",
+      "is_distractor": false
+    },
+    {
+      "id": "e2_trench_no_protective_system",
+      "kind": "worker",
+      "asset_type": "pipelayer",
+      "params": {
+        "excavation_depth_ft": 11.8,
+        "soil_type": "type_c",
+        "context": "excavation",
+        "controls": []
+      },
+      "x": 4.0,
+      "y": 5.0,
+      "level_ft": 0.0,
+      "zone": "trench_run",
+      "is_distractor": false
+    },
+    {
+      "id": "e3_dist",
+      "kind": "structure",
+      "asset_type": "signage_board",
+      "params": {},
+      "x": 15.0,
+      "y": 2.0,
+      "level_ft": 0.0,
+      "zone": "north_verge",
+      "is_distractor": true
+    },
+    {
+      "id": "e4_dist",
+      "kind": "structure",
+      "asset_type": "material_pallet",
+      "params": {},
+      "x": 24.0,
+      "y": 3.0,
+      "level_ft": 0.0,
+      "zone": "north_verge",
+      "is_distractor": true
+    },
+    {
+      "id": "e5_dist",
+      "kind": "structure",
+      "asset_type": "rebar_cage",
+      "params": {
+        "controls": [
+          "rebar_caps"
+        ]
+      },
+      "x": 20.0,
+      "y": 8.0,
+      "level_ft": 0.0,
+      "zone": "spoil_side",
+      "is_distractor": true
+    }
+  ],
+  "relations": [],
+  "hazards": [
+    {
+      "id": "h1",
+      "hazard_class": "trench_spoil_too_close",
+      "target_entity": "e1_trench_spoil_too_close",
+      "clause": "1926.651(j)(2)",
+      "energy_source": "gravitational_soil",
+      "required_controls": [
+        "retaining_device"
+      ],
+      "present_controls": [],
+      "severity": "serious",
+      "cue_salience": 0.35,
+      "intended_detectable": true
+    },
+    {
+      "id": "h2",
+      "hazard_class": "trench_no_protective_system",
+      "target_entity": "e2_trench_no_protective_system",
+      "clause": "1926.652(a)(1)",
+      "energy_source": "gravitational_soil",
+      "required_controls": [
+        "trench_shield",
+        "shoring_system",
+        "sloping_benching"
+      ],
+      "present_controls": [],
+      "severity": "serious",
+      "cue_salience": 0.45,
+      "intended_detectable": true
+    }
+  ],
+  "target_hazard_classes": [
+    "trench_spoil_too_close",
+    "trench_no_protective_system"
+  ],
+  "difficulty_target": 0.406,
+  "seed": 0,
+  "provenance": {
+    "backend": "grammar",
+    "site_provenance": "synthetic_substrate",
+    "attempts": 1,
+    "injected_faults": [],
+    "repairs_applied": [],
+    "use_solver": true,
+    "use_gate": true,
+    "difficulty_requested": 0.5,
+    "difficulty_feasible_range": [
+      0.322,
+      0.406
+    ],
+    "difficulty_clamped_to": 0.406
+  }
+}

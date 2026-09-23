@@ -1,0 +1,175 @@
+{
+  "id": "scn_steel_frame_level3_00008",
+  "site_template": "steel_frame_level3",
+  "trade": "ironworker",
+  "activity": "steel decking and connection",
+  "entities": [
+    {
+      "id": "e1_fall_unprotected_edge",
+      "kind": "worker",
+      "asset_type": "ironworker",
+      "params": {
+        "fall_height_ft": 13.4,
+        "context": "edge_exposure",
+        "controls": []
+      },
+      "x": 22.0,
+      "y": 0.0,
+      "level_ft": 0.0,
+      "zone": "north_edge",
+      "is_distractor": false
+    },
+    {
+      "id": "e2_ctx",
+      "kind": "structure",
+      "asset_type": "deck_edge",
+      "params": {},
+      "x": 20.0,
+      "y": 11.0,
+      "level_ft": 0.0,
+      "zone": "main_deck",
+      "is_distractor": false
+    },
+    {
+      "id": "e3_fall_floor_opening",
+      "kind": "worker",
+      "asset_type": "labourer",
+      "params": {
+        "hole_depth_ft": 25.3,
+        "context": "hole_exposure",
+        "controls": []
+      },
+      "x": 22.0,
+      "y": 5.0,
+      "level_ft": 0.0,
+      "zone": "main_deck",
+      "is_distractor": false
+    },
+    {
+      "id": "e4_ctx",
+      "kind": "structure",
+      "asset_type": "floor_opening",
+      "params": {},
+      "x": 3.0,
+      "y": 2.0,
+      "level_ft": 0.0,
+      "zone": "main_deck",
+      "is_distractor": false
+    },
+    {
+      "id": "e5_dist",
+      "kind": "equipment",
+      "asset_type": "portable_ladder",
+      "params": {
+        "extension_above_landing_ft": 4.0,
+        "controls": [
+          "secured_top_and_grabrail"
+        ]
+      },
+      "x": 3.0,
+      "y": 8.0,
+      "level_ft": 0.0,
+      "zone": "main_deck",
+      "is_distractor": true
+    },
+    {
+      "id": "e6_dist",
+      "kind": "equipment",
+      "asset_type": "haul_truck",
+      "params": {
+        "controls": [
+          "reverse_alarm"
+        ]
+      },
+      "x": 5.0,
+      "y": 13.0,
+      "level_ft": 0.0,
+      "zone": "access_bay",
+      "is_distractor": true
+    },
+    {
+      "id": "e7_dist",
+      "kind": "structure",
+      "asset_type": "material_pallet",
+      "params": {},
+      "x": 7.0,
+      "y": 6.0,
+      "level_ft": 0.0,
+      "zone": "main_deck",
+      "is_distractor": true
+    }
+  ],
+  "relations": [
+    {
+      "src": "e1_fall_unprotected_edge",
+      "dst": "e2_ctx",
+      "type": "exposed_to"
+    },
+    {
+      "src": "e3_fall_floor_opening",
+      "dst": "e4_ctx",
+      "type": "exposed_to"
+    }
+  ],
+  "hazards": [
+    {
+      "id": "h1",
+      "hazard_class": "fall_unprotected_edge",
+      "target_entity": "e1_fall_unprotected_edge",
+      "clause": "1926.501(b)(1)",
+      "energy_source": "gravitational",
+      "required_controls": [
+        "guardrail_system",
+        "safety_net",
+        "personal_fall_arrest"
+      ],
+      "present_controls": [],
+      "severity": "fatal",
+      "cue_salience": 0.55,
+      "intended_detectable": true
+    },
+    {
+      "id": "h2",
+      "hazard_class": "fall_floor_opening",
+      "target_entity": "e3_fall_floor_opening",
+      "clause": "1926.501(b)(4)(i)",
+      "energy_source": "gravitational",
+      "required_controls": [
+        "hole_cover",
+        "guardrail_system",
+        "personal_fall_arrest"
+      ],
+      "present_controls": [],
+      "severity": "fatal",
+      "cue_salience": 0.3,
+      "intended_detectable": true
+    }
+  ],
+  "target_hazard_classes": [
+    "fall_unprotected_edge",
+    "fall_floor_opening"
+  ],
+  "difficulty_target": 0.353,
+  "seed": 8,
+  "provenance": {
+    "backend": "grammar",
+    "site_provenance": "synthetic_substrate",
+    "attempts": 2,
+    "injected_faults": [
+      "push_threshold:e5_dist:extension_above_landing_ft",
+      "drop_control:e6_dist:reverse_alarm,spotter"
+    ],
+    "repairs_applied": [
+      "restore_compliance:e5_dist",
+      "restore_compliance:e6_dist"
+    ],
+    "use_solver": true,
+    "use_gate": true,
+    "difficulty_requested": 0.5,
+    "difficulty_feasible_range": [
+      0.264,
+      0.353
+    ],
+    "difficulty_clamped_to": 0.353
+  }
+}

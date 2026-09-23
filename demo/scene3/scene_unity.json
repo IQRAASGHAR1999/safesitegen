@@ -1,0 +1,303 @@
+{
+  "formatVersion": "safesitegen/scene-1.0",
+  "scenarioId": "scn_steel_frame_level3_00008",
+  "site": {
+    "id": "steel_frame_level3",
+    "name": "Steel frame building, level 3 deck",
+    "provenance": "synthetic_substrate",
+    "width": 24,
+    "depth": 16,
+    "grade_elevation_ft": 0.0,
+    "deck_elevation_ft": 30.0,
+    "zones": [
+      {
+        "name": "north_edge",
+        "type": "slab_edge",
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "d": 2
+      },
+      {
+        "name": "main_deck",
+        "type": "deck",
+        "x": 0,
+        "y": 2,
+        "w": 24,
+        "d": 11
+      },
+      {
+        "name": "access_bay",
+        "type": "access",
+        "x": 0,
+        "y": 13,
+        "w": 6,
+        "d": 3
+      },
+      {
+        "name": "laydown",
+        "type": "laydown",
+        "x": 6,
+        "y": 13,
+        "w": 12,
+        "d": 3
+      },
+      {
+        "name": "south_scaffold",
+        "type": "scaffold_bay",
+        "x": 18,
+        "y": 13,
+        "w": 6,
+        "d": 3
+      }
+    ],
+    "obstacles": [
+      {
+        "x": 8,
+        "y": 6,
+        "w": 1,
+        "d": 1,
+        "asset_type": "steel_column"
+      },
+      {
+        "x": 16,
+        "y": 6,
+        "w": 1,
+        "d": 1,
+        "asset_type": "steel_column"
+      },
+      {
+        "x": 12,
+        "y": 9,
+        "w": 2,
+        "d": 1,
+        "asset_type": "stacked_decking"
+      }
+    ],
+    "entry": [
+      2,
+      14
+    ],
+    "patrol": [
+      {
+        "x": 2,
+        "y": 14
+      },
+      {
+        "x": 6,
+        "y": 12
+      },
+      {
+        "x": 11,
+        "y": 9
+      },
+      {
+        "x": 16,
+        "y": 7
+      },
+      {
+        "x": 20,
+        "y": 4
+      },
+      {
+        "x": 12,
+        "y": 2
+      },
+      {
+        "x": 4,
+        "y": 3
+      },
+      {
+        "x": 19,
+        "y": 12
+      }
+    ]
+  },
+  "trade": "ironworker",
+  "activity": "steel decking and connection",
+  "difficulty": 0.353,
+  "validated": true,
+  "instances": [
+    {
+      "instanceId": "e1_fall_unprotected_edge",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "ironworker",
+      "kind": "worker",
+      "transform": {
+        "position": [
+          22.0,
+          0.0,
+          0.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "north_edge",
+      "isDistractor": false,
+      "params": {
+        "fall_height_ft": 13.4,
+        "context": "edge_exposure"
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h1",
+        "hazardClass": "fall_unprotected_edge",
+        "clause": "1926.501(b)(1)",
+        "severity": "fatal",
+        "requiredControls": [
+          "guardrail_system",
+          "safety_net",
+          "personal_fall_arrest"
+        ],
+        "cueSalience": 0.55
+      }
+    },
+    {
+      "instanceId": "e2_ctx",
+      "prefab": "Prefabs/Structure/DeckEdge",
+      "assetType": "deck_edge",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          20.0,
+          0.0,
+          11.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "main_deck",
+      "isDistractor": false,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e3_fall_floor_opening",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "labourer",
+      "kind": "worker",
+      "transform": {
+        "position": [
+          22.0,
+          0.0,
+          5.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "main_deck",
+      "isDistractor": false,
+      "params": {
+        "hole_depth_ft": 25.3,
+        "context": "hole_exposure"
+      },
+      "controls": [],
+      "scoring": {
+        "hazardId": "h2",
+        "hazardClass": "fall_floor_opening",
+        "clause": "1926.501(b)(4)(i)",
+        "severity": "fatal",
+        "requiredControls": [
+          "hole_cover",
+          "guardrail_system",
+          "personal_fall_arrest"
+        ],
+        "cueSalience": 0.3
+      }
+    },
+    {
+      "instanceId": "e4_ctx",
+      "prefab": "Prefabs/Structure/FloorOpening",
+      "assetType": "floor_opening",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          3.0,
+          0.0,
+          2.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "main_deck",
+      "isDistractor": false,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    },
+    {
+      "instanceId": "e5_dist",
+      "prefab": "Prefabs/Access/ExtensionLadder",
+      "assetType": "portable_ladder",
+      "kind": "equipment",
+      "transform": {
+        "position": [
+          3.0,
+          0.0,
+          8.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "main_deck",
+      "isDistractor": true,
+      "params": {
+        "extension_above_landing_ft": 4.0
+      },
+      "controls": [
+        "secured_top_and_grabrail"
+      ],
+      "scoring": null
+    },
+    {
+      "instanceId": "e6_dist",
+      "prefab": "Prefabs/Plant/HaulTruck",
+      "assetType": "haul_truck",
+      "kind": "equipment",
+      "transform": {
+        "position": [
+          5.0,
+          0.0,
+          13.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "access_bay",
+      "isDistractor": true,
+      "params": {},
+      "controls": [
+        "reverse_alarm"
+      ],
+      "scoring": null
+    },
+    {
+      "instanceId": "e7_dist",
+      "prefab": "Prefabs/Generic/Placeholder",
+      "assetType": "material_pallet",
+      "kind": "structure",
+      "transform": {
+        "position": [
+          7.0,
+          0.0,
+          6.0
+        ],
+        "rotationY": 0.0
+      },
+      "zone": "main_deck",
+      "isDistractor": true,
+      "params": {},
+      "controls": [],
+      "scoring": null
+    }
+  ],
+  "answerKey": [
+    {
+      "hazardId": "h1",
+      "entityId": "e1_fall_unprotected_edge",
+      "hazardClass": "fall_unprotected_edge",
+      "clause": "1926.501(b)(1)"
+    },
+    {
+      "hazardId": "h2",
+      "entityId": "e3_fall_floor_opening",
+      "hazardClass": "fall_floor_opening",
+      "clause": "1926.501(b)(4)(i)"
+    }
+  ]
+}

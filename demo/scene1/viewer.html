@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>SafeSiteGen scenario scn_utility_trench_corridor_00000</title>
+<style>
+  :root { --ink:#16202b; --muted:#6b7785; --line:#dde3ea; --bg:#f6f8fa; --hazard:#c8322f;
+          --distract:#2f6fc8; --ok:#1e7a4c; --route:#8a6d3b; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+         color:var(--ink); background:var(--bg); }
+  header { padding:16px 22px; background:#fff; border-bottom:1px solid var(--line); }
+  h1 { margin:0 0 3px; font-size:16px; letter-spacing:.2px; }
+  .sub { color:var(--muted); font-size:12.5px; }
+  .wrap { display:flex; gap:18px; padding:18px 22px; align-items:flex-start; flex-wrap:wrap; }
+  .panel { background:#fff; border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  #stage { flex:1 1 620px; min-width:420px; }
+  #side { flex:0 1 380px; min-width:320px; max-height:76vh; overflow:auto; }
+  canvas { width:100%; height:auto; display:block; border-radius:5px; }
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:.9px; color:var(--muted);
+       margin:0 0 9px; font-weight:600; }
+  .chk { padding:7px 0; border-bottom:1px dotted var(--line); font-size:12.5px; }
+  .chk:last-child { border-bottom:0; }
+  .tag { display:inline-block; font-size:10.5px; font-weight:700; padding:1px 6px;
+         border-radius:3px; margin-right:7px; vertical-align:1px; }
+  .pass { background:#e4f3ea; color:var(--ok); }
+  .fail { background:#fbe6e5; color:var(--hazard); }
+  .cid { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px; color:var(--ink); }
+  .det { color:var(--muted); }
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; font-size:12px; color:var(--muted); }
+  .swatch { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  td { padding:4px 0; vertical-align:top; }
+  td.k { color:var(--muted); width:44%; }
+  .clause { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11.5px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>scn_utility_trench_corridor_00000 &middot; Utility trench corridor, storm drain tie-in</h1>
+  <div class="sub">pipelayer &middot; storm drain tie-in &middot; difficulty 0.41 &middot; validated</div>
+</header>
+<div class="wrap">
+  <div class="panel" id="stage">
+    <h2>Site plan</h2>
+    <canvas id="c" width="1000" height="620"></canvas>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--hazard)"></i>teaching point</span>
+      <span><i class="swatch" style="background:var(--distract)"></i>distractor</span>
+      <span><i class="swatch" style="background:#94a3b2"></i>context / plant</span>
+      <span><i class="swatch" style="background:var(--route)"></i>trainee route</span>
+      <span><i class="swatch" style="background:#c9ced6"></i>fixed geometry</span>
+    </div>
+  </div>
+  <div class="panel" id="side">
+    <h2>Teaching points</h2>
+    <div id="haz"></div>
+    <h2 style="margin-top:18px">Validation report</h2>
+    <div id="checks"></div>
+  </div>
+</div>
+<script>
+const DATA = {"scene": {"formatVersion": "safesitegen/scene-1.0", "scenarioId": "scn_utility_trench_corridor_00000", "site": {"id": "utility_trench_corridor", "name": "Utility trench corridor, storm drain tie-in", "provenance": "synthetic_substrate", "width": 30, "depth": 12, "grade_elevation_ft": 0.0, "deck_elevation_ft": 0.0, "zones": [{"name": "trench_run", "type": "excavation", "x": 3, "y": 5, "w": 24, "d": 2}, {"name": "spoil_side", "type": "laydown", "x": 3, "y": 7, "w": 24, "d": 2}, {"name": "north_verge", "type": "work_zone", "x": 0, "y": 0, "w": 30, "d": 5}, {"name": "haul_road", "type": "haul_road", "x": 0, "y": 9, "w": 30, "d": 3}], "obstacles": [{"x": 14, "y": 3, "w": 2, "d": 1, "asset_type": "pipe_stack"}, {"x": 24, "y": 10, "w": 3, "d": 2, "asset_type": "excavator"}], "entry": [1, 10], "patrol": [{"x": 1, "y": 10}, {"x": 6, "y": 8}, {"x": 11, "y": 8}, {"x": 16, "y": 4}, {"x": 21, "y": 4}, {"x": 26, "y": 8}, {"x": 28, "y": 10}]}, "trade": "pipelayer", "activity": "storm drain tie-in", "difficulty": 0.406, "validated": true, "instances": [{"instanceId": "e1_trench_spoil_too_close", "prefab": "Prefabs/Earthworks/SpoilPile", "assetType": "spoil_pile", "kind": "structure", "transform": {"position": [8.0, 0.0, 6.0], "rotationY": 0.0}, "zone": "trench_run", "isDistractor": false, "params": {"distance_from_edge_ft": 1.6}, "controls": [], "scoring": {"hazardId": "h1", "hazardClass": "trench_spoil_too_close", "clause": "1926.651(j)(2)", "severity": "serious", "requiredControls": ["retaining_device"], "cueSalience": 0.35}}, {"instanceId": "e2_trench_no_protective_system", "prefab": "Prefabs/Generic/Placeholder", "assetType": "pipelayer", "kind": "worker", "transform": {"position": [4.0, 0.0, 5.0], "rotationY": 0.0}, "zone": "trench_run", "isDistractor": false, "params": {"excavation_depth_ft": 11.8, "soil_type": "type_c", "context": "excavation"}, "controls": [], "scoring": {"hazardId": "h2", "hazardClass": "trench_no_protective_system", "clause": "1926.652(a)(1)", "severity": "serious", "requiredControls": ["trench_shield", "shoring_system", "sloping_benching"], "cueSalience": 0.45}}, {"instanceId": "e3_dist", "prefab": "Prefabs/Generic/Placeholder", "assetType": "signage_board", "kind": "structure", "transform": {"position": [15.0, 0.0, 2.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": true, "params": {}, "controls": [], "scoring": null}, {"instanceId": "e4_dist", "prefab": "Prefabs/Generic/Placeholder", "assetType": "material_pallet", "kind": "structure", "transform": {"position": [24.0, 0.0, 3.0], "rotationY": 0.0}, "zone": "north_verge", "isDistractor": true, "params": {}, "controls": [], "scoring": null}, {"instanceId": "e5_dist", "prefab": "Prefabs/Concrete/RebarCage", "assetType": "rebar_cage", "kind": "structure", "transform": {"position": [20.0, 0.0, 8.0], "rotationY": 0.0}, "zone": "spoil_side", "isDistractor": true, "params": {}, "controls": ["rebar_caps"], "scoring": null}], "answerKey": [{"hazardId": "h1", "entityId": "e1_trench_spoil_too_close", "hazardClass": "trench_spoil_too_close", "clause": "1926.651(j)(2)"}, {"hazardId": "h2", "entityId": "e2_trench_no_protective_system", "hazardClass": "trench_no_protective_system", "clause": "1926.652(a)(1)"}]}, "report": {"scenario_id": "scn_utility_trench_corridor_00000", "passed": true, "difficulty": 0.406, "metrics": {"n_entities": 5, "n_hazards": 2, "n_distractors": 3, "hazard_classes": ["trench_no_protective_system", "trench_spoil_too_close"], "signature": "956420fa29fed6c8"}, "checks": [{"check_id": "SCH.wellformed", "layer": "schema", "status": "pass", "detail": "scenario graph is well formed", "clause": null, "entity": null}, {"check_id": "REG.hazard_realised", "layer": "regulatory", "status": "pass", "detail": "trench_spoil_too_close is present on e1_trench_spoil_too_close as declared", "clause": "1926.651(j)(2)", "entity": "e1_trench_spoil_too_close"}, {"check_id": "REG.hazard_realised", "layer": "regulatory", "status": "pass", "detail": "trench_no_protective_system is present on e2_trench_no_protective_system as declared", "clause": "1926.652(a)(1)", "entity": "e2_trench_no_protective_system"}, {"check_id": "REG.no_unintended_violation", "layer": "regulatory", "status": "pass", "detail": "no unlabelled regulatory violations in the scene", "clause": null, "entity": null}, {"check_id": "PHY.placed", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.in_bounds", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.no_overlap", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.supported", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.reachable", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.no_interpenetration", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PHY.zone_affordance", "layer": "physical", "status": "pass", "detail": "satisfied for all entities", "clause": null, "entity": null}, {"check_id": "PED.hazard_count", "layer": "pedagogical", "status": "pass", "detail": "2 teaching points", "clause": null, "entity": null}, {"check_id": "PED.cue_perceivable", "layer": "pedagogical", "status": "pass", "detail": "every teaching point is visible from the trainee route", "clause": null, "entity": null}, {"check_id": "PED.distractor_present", "layer": "pedagogical", "status": "pass", "detail": "3 distractors", "clause": null, "entity": null}, {"check_id": "PED.hazard_separation", "layer": "pedagogical", "status": "pass", "detail": "teaching points are spatially separated", "clause": null, "entity": null}, {"check_id": "PED.curriculum_coverage", "layer": "pedagogical", "status": "pass", "detail": "all requested hazard classes delivered", "clause": null, "entity": null}, {"check_id": "PED.difficulty_band", "layer": "pedagogical", "status": "pass", "detail": "difficulty 0.41 within band of 0.41", "clause": null, "entity": null}]}};
+
+const ZONE_FILL = {
+  slab_edge:"#fdf0e6", deck:"#f2f5f8", access:"#eef4ee", laydown:"#f7f4ec",
+  excavation:"#efeae2", work_zone:"#eef1f7", haul_road:"#eceff2"
+};
+
+function draw() {
+  const cv = document.getElementById("c"), g = cv.getContext("2d");
+  const site = DATA.scene.site;
+  const pad = 40;
+  const s = Math.min((cv.width - 2*pad) / site.width, (cv.height - 2*pad) / site.depth);
+  const X = x => pad + x * s, Y = y => pad + y * s;
+
+  g.clearRect(0,0,cv.width,cv.height);
+  g.fillStyle = "#fff"; g.fillRect(0,0,cv.width,cv.height);
+
+  for (const z of site.zones) {
+    g.fillStyle = ZONE_FILL[z.type] || "#f4f6f8";
+    g.fillRect(X(z.x), Y(z.y), z.w*s, z.d*s);
+    g.strokeStyle = "#e2e7ec"; g.lineWidth = 1;
+    g.strokeRect(X(z.x), Y(z.y), z.w*s, z.d*s);
+    g.fillStyle = "#98a3ae"; g.font = "10px Helvetica";
+    g.fillText(z.type, X(z.x)+4, Y(z.y)+12);
+  }
+
+  g.strokeStyle = "#eef1f4"; g.lineWidth = 0.5;
+  for (let x=0; x<=site.width; x++){ g.beginPath(); g.moveTo(X(x),Y(0)); g.lineTo(X(x),Y(site.depth)); g.stroke(); }
+  for (let y=0; y<=site.depth; y++){ g.beginPath(); g.moveTo(X(0),Y(y)); g.lineTo(X(site.width),Y(y)); g.stroke(); }
+
+  for (const o of site.obstacles) {
+    g.fillStyle = "#c9ced6";
+    g.fillRect(X(o.x), Y(o.y), o.w*s, o.d*s);
+  }
+
+  g.strokeStyle = "#8a6d3b"; g.lineWidth = 1.6; g.setLineDash([5,4]);
+  g.beginPath();
+  site.patrol.forEach((p,i) => i ? g.lineTo(X(p.x+0.5),Y(p.y+0.5)) : g.moveTo(X(p.x+0.5),Y(p.y+0.5)));
+  g.stroke(); g.setLineDash([]);
+  site.patrol.forEach(p => {
+    g.fillStyle = "#8a6d3b"; g.beginPath();
+    g.arc(X(p.x+0.5), Y(p.y+0.5), 3, 0, 6.284); g.fill();
+  });
+
+  const keyed = {};
+  DATA.scene.answerKey.forEach((a,i) => keyed[a.entityId] = i+1);
+
+  for (const inst of DATA.scene.instances) {
+    const px = X(inst.transform.position[0] + 0.5), py = Y(inst.transform.position[2] + 0.5);
+    const isHaz = inst.scoring !== null;
+    g.fillStyle = isHaz ? "#c8322f" : (inst.isDistractor ? "#2f6fc8" : "#94a3b2");
+    g.beginPath(); g.arc(px, py, isHaz ? 8 : 5.5, 0, 6.284); g.fill();
+    if (isHaz) {
+      g.strokeStyle = "rgba(200,50,47,.35)"; g.lineWidth = 1.4;
+      g.beginPath(); g.arc(px, py, 15, 0, 6.284); g.stroke();
+      g.fillStyle = "#fff"; g.font = "bold 10px Helvetica"; g.textAlign = "center";
+      g.fillText(String(keyed[inst.instanceId] || ""), px, py+3.5);
+      g.textAlign = "start";
+    }
+    g.fillStyle = "#5c6773"; g.font = "9.5px Helvetica";
+    g.fillText(inst.assetType, px + 11, py + 3);
+  }
+}
+
+function render() {
+  const hz = document.getElementById("haz");
+  hz.innerHTML = DATA.scene.answerKey.map((a,i) => {
+    const inst = DATA.scene.instances.find(x => x.instanceId === a.entityId) || {};
+    const req = (inst.scoring && inst.scoring.requiredControls || []).join(", ") || "n/a";
+    return `<div class="chk"><span class="tag fail">${i+1}</span>
+      <b>${a.hazardClass.replace(/_/g," ")}</b><br/>
+      <table>
+        <tr><td class="k">clause</td><td class="clause">${a.clause}</td></tr>
+        <tr><td class="k">required control</td><td>${req}</td></tr>
+        <tr><td class="k">present control</td><td>${(inst.controls||[]).join(", ") || "none"}</td></tr>
+        <tr><td class="k">location</td><td>${inst.transform ?
+          inst.transform.position[0]+", "+inst.transform.position[2] : "?"}</td></tr>
+      </table></div>`;
+  }).join("");
+
+  document.getElementById("checks").innerHTML = DATA.report.checks.map(c =>
+    `<div class="chk"><span class="tag ${c.status}">${c.status}</span>
+     <span class="cid">${c.check_id}</span><br/>
+     <span class="det">${c.detail}</span></div>`).join("");
+}
+
+draw(); render();
+</script>
+</body>
+</html>

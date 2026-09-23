@@ -1,4 +1,6 @@
 # SafeSiteGen
+![tests](https://github.com/IQRAASGHAR1999/safesitegen/actions/workflows/tests.yml/badge.svg)
+
 
 **Verifiable procedural generation of construction safety training scenarios.**
 

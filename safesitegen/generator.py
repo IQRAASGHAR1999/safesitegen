@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from .knowledge import DISTRACTORS, HAZARD_BY_ID, RULES_BY_ID, classes_for_zone, rule_for_class
-from .layout import random_placement, solve
+from .layout import feasible_difficulty_range, random_placement, solve
 from .schema import Entity, Hazard, Relation, Scenario
 from .site import SiteModel
 from .validate import ValidationReport, validate
@@ -88,9 +88,15 @@ def build_scenario(
     rng: random.Random,
     scenario_id: str,
     n_distractors: int = 3,
+    trade: Optional[str] = None,
 ) -> Scenario:
     """Instantiate the semantic layer: entities, relations and teaching points."""
-    trade, activity = rng.choice(TRADES_BY_SITE.get(site.id, DEFAULT_TRADES))
+    options = TRADES_BY_SITE.get(site.id, DEFAULT_TRADES)
+    if trade:
+        match = next((t for t in options if t[0] == trade), None)
+        trade, activity = match if match else (trade, "site works")
+    else:
+        trade, activity = rng.choice(options)
     scenario = Scenario(
         id=scenario_id,
         site_template=site.id,
@@ -250,6 +256,29 @@ def repair(scenario: Scenario, report: ValidationReport, rng: random.Random) -> 
             scenario.hazards = keep
             applied.append(f"trim_hazards:{','.join(dropped)}")
 
+        elif check.check_id == "PED.difficulty_band":
+            # distractor pressure is the one difficulty term that can be changed
+            # without moving a teaching point, so tune it before re-solving
+            current = sum(1 for e in scenario.entities if e.is_distractor)
+            want_harder = "away from the target" in check.detail and \
+                float(check.detail.split("difficulty ")[1].split(" ")[0]) < scenario.difficulty_target
+            if want_harder and current < 7:
+                for _ in range(min(3, 7 - current)):
+                    tpl = rng.choice(DISTRACTORS)
+                    scenario.entities.append(Entity(
+                        id=f"e{len(scenario.entities) + 1}_dist", kind=tpl["kind"],
+                        asset_type=tpl["asset_type"], params=dict(tpl.get("params", {})),
+                        is_distractor=True))
+                applied.append("raise_distractor_pressure")
+            elif not want_harder and current > 1:
+                for e in list(scenario.entities):
+                    if e.is_distractor and current > 1:
+                        scenario.entities.remove(e)
+                        current -= 1
+                        if current <= 1:
+                            break
+                applied.append("lower_distractor_pressure")
+
         elif check.check_id == "PED.distractor_present":
             tpl = rng.choice(DISTRACTORS)
             scenario.entities.append(
@@ -275,8 +304,9 @@ def generate(
     target_classes: Optional[Sequence[str]] = None,
     difficulty_target: float = 0.5,
     seed: int = 0,
-    n_hazards: int = 3,
+    n_hazards: Optional[int] = None,
     n_distractors: int = 3,
+    trade: Optional[str] = None,
     fault_rate: float = 0.0,
     use_solver: bool = True,
     use_gate: bool = True,
@@ -287,17 +317,35 @@ def generate(
 
     ``use_solver`` and ``use_gate`` exist so the ablation arms share one code
     path; turning both off gives the unconstrained baseline.
+
+    ``n_hazards`` only tops up a partial class list when it is given explicitly,
+    so naming two classes and saying nothing about a count delivers exactly two.
     """
     rng = random.Random(seed)
     site = SiteModel.load(site_template) if site_template else SiteModel.load(rng.choice(SiteModel.ids()))
 
+    pool = _available_classes(site)
     if target_classes is None:
-        pool = _available_classes(site)
-        k = min(n_hazards, len(pool))
-        target_classes = rng.sample(pool, k)
+        target_classes = rng.sample(pool, min(n_hazards or 3, len(pool)))
+    else:
+        # named classes are always delivered; an explicit count tops the rest up
+        target_classes = [c for c in target_classes if c in HAZARD_BY_ID]
+        if n_hazards is not None and n_hazards > len(target_classes):
+            spare = [c for c in pool if c not in target_classes]
+            rng.shuffle(spare)
+            target_classes = list(target_classes) + spare[: n_hazards - len(target_classes)]
 
     scenario_id = scenario_id or f"scn_{site.id}_{seed:05d}"
-    scenario = build_scenario(site, target_classes, difficulty_target, rng, scenario_id, n_distractors)
+    scenario = build_scenario(site, target_classes, difficulty_target, rng, scenario_id,
+                              n_distractors, trade=trade)
+
+    # Clamp an impossible request to what the geometry can actually deliver,
+    # and record that it was clamped rather than quietly missing the target.
+    lo, hi = feasible_difficulty_range(scenario, site, seed=seed)
+    clamped = None
+    if not lo - 0.05 <= difficulty_target <= hi + 0.05:
+        clamped = max(lo, min(hi, difficulty_target))
+        scenario.difficulty_target = round(clamped, 3)
     injected = inject_faults(scenario, fault_rate, rng)
 
     if use_solver:
@@ -331,6 +379,9 @@ def generate(
             "repairs_applied": repairs,
             "use_solver": use_solver,
             "use_gate": use_gate,
+            "difficulty_requested": difficulty_target,
+            "difficulty_feasible_range": [lo, hi],
+            "difficulty_clamped_to": round(clamped, 3) if clamped is not None else None,
         }
     )
     return GenerationResult(scenario, report, accepted, attempts, e, injected, repairs)

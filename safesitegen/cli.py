@@ -9,6 +9,8 @@ from pathlib import Path
 
 from .export import export_all
 from .generator import generate
+from .prompt import apply_to_scenario, parse, to_generator_kwargs
+from .schema import Scenario
 from .knowledge import HAZARD_BY_ID, RULE_META, RULES
 from .learner import LearnerModel, TrainingEvent
 from .site import SiteModel
@@ -37,6 +39,56 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"injected   {', '.join(result.injected_faults)}")
     if result.repairs_applied:
         print(f"repairs    {', '.join(result.repairs_applied)}")
+    print()
+    print(result.report.summary())
+
+    if args.out:
+        paths = export_all(result.scenario, result.report, args.out, site)
+        print()
+        for key, path in paths.items():
+            print(f"{key:9} {path}")
+    return 0 if result.accepted else 1
+
+
+def cmd_prompt(args: argparse.Namespace) -> int:
+    """Natural language in, validated training scene out."""
+    current = None
+    if args.modify:
+        current = Scenario.from_dict(json.loads(Path(args.modify).read_text()))
+
+    spec = parse(args.text, current, backend=args.backend)
+    print(spec.explain())
+    print()
+
+    if spec.intent == "modify" and current is not None:
+        kwargs = apply_to_scenario(spec, current)
+        print("resolved   " + json.dumps(kwargs))
+    else:
+        kwargs = to_generator_kwargs(spec)
+        print("resolved   " + json.dumps(kwargs))
+    print()
+
+    result = generate(seed=args.seed, fault_rate=args.fault_rate,
+                      use_gate=not args.no_gate, **kwargs)
+    site = SiteModel.load(result.scenario.site_template)
+
+    print(f"scenario   {result.scenario.id}")
+    print(f"site       {site.name}")
+    print(f"task       {result.scenario.trade.replace('_', ' ')}, {result.scenario.activity}")
+    for h in result.scenario.hazards:
+        e = result.scenario.entity(h.target_entity)
+        print(f"  hazard   {h.hazard_class:<32} {h.clause:<18} at ({int(e.x)}, {int(e.y)})")
+    prov = result.scenario.provenance
+    if prov.get("difficulty_clamped_to") is not None:
+        lo, hi = prov["difficulty_feasible_range"]
+        print(f"note       requested difficulty {prov['difficulty_requested']:.2f} is outside what "
+              f"this site and hazard set can reach ([{lo:.2f}, {hi:.2f}]); "
+              f"clamped to {prov['difficulty_clamped_to']:.2f}")
+    if result.injected_faults:
+        print(f"injected   {', '.join(result.injected_faults)}")
+    if result.repairs_applied:
+        print(f"repairs    {', '.join(result.repairs_applied)}")
+    print(f"attempts   {result.attempts}")
     print()
     print(result.report.summary())
 
@@ -138,6 +190,18 @@ def build_parser() -> argparse.ArgumentParser:
     g.add_argument("--no-gate", action="store_true", help="ablate the validation gate")
     g.add_argument("--out", default=None, help="output directory")
     g.set_defaults(func=cmd_generate)
+
+    pr = sub.add_parser("prompt", help="generate or modify a scene from natural language")
+    pr.add_argument("text", help="what you want, in plain English")
+    pr.add_argument("--modify", default=None,
+                    help="path to an existing scenario.json to edit instead of starting fresh")
+    pr.add_argument("--backend", choices=["lexicon", "llm"], default="lexicon")
+    pr.add_argument("--seed", type=int, default=0)
+    pr.add_argument("--fault-rate", type=float, default=0.0)
+    pr.add_argument("--no-gate", action="store_true",
+                    help="ablate the validation gate, to show what would ship without it")
+    pr.add_argument("--out", default=None, help="output directory")
+    pr.set_defaults(func=cmd_prompt)
 
     r = sub.add_parser("rules", help="list the machine-checkable rule pack")
     r.add_argument("-v", "--verbose", action="store_true")

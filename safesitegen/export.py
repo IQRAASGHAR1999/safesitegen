@@ -188,11 +188,11 @@ function draw() {
 
   g.strokeStyle = "#8a6d3b"; g.lineWidth = 1.6; g.setLineDash([5,4]);
   g.beginPath();
-  site.patrol.forEach((p,i) => i ? g.lineTo(X(p[0]+0.5),Y(p[1]+0.5)) : g.moveTo(X(p[0]+0.5),Y(p[1]+0.5)));
+  site.patrol.forEach((p,i) => i ? g.lineTo(X(p.x+0.5),Y(p.y+0.5)) : g.moveTo(X(p.x+0.5),Y(p.y+0.5)));
   g.stroke(); g.setLineDash([]);
   site.patrol.forEach(p => {
     g.fillStyle = "#8a6d3b"; g.beginPath();
-    g.arc(X(p[0]+0.5), Y(p[1]+0.5), 3, 0, 6.284); g.fill();
+    g.arc(X(p.x+0.5), Y(p.y+0.5), 3, 0, 6.284); g.fill();
   });
 
   const keyed = {};
@@ -276,9 +276,13 @@ def export_all(
         "report": out / "report.json",
         "scene": out / "scene_unity.json",
         "viewer": out / "viewer.html",
+        "environment": out / "environment.html",
     }
     paths["scenario"].write_text(scenario.to_json(), encoding="utf-8")
     paths["report"].write_text(json.dumps(report.to_dict(), indent=2), encoding="utf-8")
     paths["scene"].write_text(json.dumps(to_unity_scene(scenario, site, report), indent=2), encoding="utf-8")
     write_viewer(paths["viewer"], scenario, site, report)
+
+    from .environment import write_environment  # local import avoids a cycle
+    write_environment(paths["environment"], scenario, site, report)
     return paths

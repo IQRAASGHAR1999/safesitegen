@@ -209,5 +209,7 @@ class SiteModel:
                       for z in self.zones],
             "obstacles": self.obstacles,
             "entry": list(self.entry),
-            "patrol": [list(p) for p in self.patrol],
+            # objects rather than nested arrays: Unity's JsonUtility cannot
+            # deserialise jagged arrays, and this costs the JS nothing
+            "patrol": [{"x": int(p[0]), "y": int(p[1])} for p in self.patrol],
         }

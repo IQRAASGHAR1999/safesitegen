@@ -14,6 +14,8 @@ from .layout import solve
 from .generator import generate, GenerationResult
 from .learner import LearnerModel, TrainingEvent
 from .export import export_all, to_unity_scene
+from .environment import write_environment
+from .prompt import parse as parse_prompt, PromptSpec
 
 __version__ = "0.1.0"
 
@@ -36,5 +38,8 @@ __all__ = [
     "TrainingEvent",
     "export_all",
     "to_unity_scene",
+    "write_environment",
+    "parse_prompt",
+    "PromptSpec",
     "__version__",
 ]

@@ -105,6 +105,38 @@ def energy(scenario: Scenario, site: SiteModel, allowed: Dict[str, set]) -> floa
     return e_total
 
 
+def feasible_difficulty_range(
+    scenario: Scenario,
+    site: SiteModel,
+    seed: int = 0,
+    samples: int = 28,
+) -> Tuple[float, float]:
+    """Cheap estimate of the difficulty band this site and hazard set can reach.
+
+    Difficulty is bounded by geometry: a narrow trench corridor with the
+    inspection route running alongside it cannot hide a teaching point, so no
+    amount of solving will make it hard. Knowing the achievable band lets the
+    system say so instead of failing the gate on an impossible request.
+    """
+    rng = random.Random(seed)
+    from .validate import estimate_difficulty
+
+    candidates = {e.id: _allowed_cells(e, scenario, site) for e in scenario.entities}
+    saved = [(e.id, e.x, e.y) for e in scenario.entities]
+    lo, hi = 1.0, 0.0
+    for _ in range(samples):
+        for ent in scenario.entities:
+            pool = candidates[ent.id] or site.all_free_cells()
+            cx, cy = rng.choice(pool)
+            ent.x, ent.y = float(cx), float(cy)
+        d = estimate_difficulty(scenario, site)
+        lo, hi = min(lo, d), max(hi, d)
+    for entity_id, x, y in saved:
+        ent = scenario.entity(entity_id)
+        ent.x, ent.y = x, y
+    return (round(lo, 3), round(hi, 3))
+
+
 def random_placement(scenario: Scenario, site: SiteModel, rng: random.Random) -> Scenario:
     """Unconstrained baseline: drop every entity anywhere on the grid.
 

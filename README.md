@@ -1,10 +1,9 @@
 # SafeSiteGen
 
 **Verifiable procedural generation of construction safety training scenarios.**
-   ![tests](https://github.com/IQRAASGHAR1999/safesitegen/actions/workflows/tests.yml/badge.svg)
 
 Reference implementation for the research proposal *Verifiable Procedural Content Generation for
-Construction Safety Training*. Pure Python standard library, no dependencies, 64 passing tests.
+Construction Safety Training*. Pure Python standard library, no dependencies, 92 passing tests.
 
 Virtual reality safety training works, but every scenario is hand-authored by a 3D artist and a
 safety subject matter expert, which costs weeks per scene. Procedural Content Generation via
@@ -12,7 +11,7 @@ Machine Learning is the obvious answer to an authoring bottleneck, except that i
 criterion does not transfer. A generated game level has to be *playable*. A generated safety
 scenario has to be **correct against a legal standard** and **sound as instruction**.
 
-
+SafeSiteGen is a working pipeline for the second problem.
 
 ---
 
@@ -44,7 +43,6 @@ specification
 ```
 
 ![framework](docs/framework.png)
-![demo](docs/demo.mp4)
 
 The generator never writes coordinates. It emits semantics; the solver writes geometry; the gate
 adjudicates. Keeping those three separable is what makes the system checkable.
@@ -90,6 +88,65 @@ See [`results/expressive_range.svg`](results/expressive_range.svg).
 
 ---
 
+## From a prompt to a walkable training environment
+
+```bash
+python -m safesitegen prompt \
+  "a storm drain crew working in an unshored trench with the spoil piled right on the edge" \
+  --out demo/scene1
+```
+
+```
+prompt   "a storm drain crew working in an unshored trench with the spoil piled right on the edge"
+intent   create  (backend: lexicon)
+  - "spoil pile" -> trench_spoil_too_close  [1926.651(j)(2)]
+  - "unshored" -> trench_no_protective_system  [1926.652(a)(1)]
+  - "storm drain crew" -> trade pipelayer
+  - site "storm drain" -> utility_trench_corridor
+
+note       requested difficulty 0.50 is outside what this site and hazard set can
+           reach ([0.32, 0.41]); clamped to 0.41
+PASS  (17 checks, difficulty 0.41)
+```
+
+The parse trace is deliberate: a trainer has to be able to audit which words drove which
+decision. The lexicon backend can only ever emit identifiers already in the taxonomy, so it
+cannot invent a hazard class. `--backend llm` routes the same request through
+schema-constrained decoding, with the same closed vocabulary as the enum.
+
+Then edit the scene in place, and note that the edit is verified exactly as strictly:
+
+```bash
+python -m safesitegen prompt \
+  "now add a crane working near the overhead power line and make it harder, but remove the spoil pile" \
+  --modify demo/scene1/scenario.json --out demo/scene2
+```
+
+`demo/scene1/environment.html` opens a walkable first-person site: move with WASD, drag to
+look, click what you believe is a hazard, press Enter to be scored against the answer key the
+gate verified. No libraries, no build step, no network.
+
+### What a gate failure actually looks like
+
+```bash
+python -m safesitegen prompt "ironworker on a steel deck with an unprotected \
+    leading edge and an uncovered floor opening" --fault-rate 0.8 --seed 8 --no-gate
+```
+
+```
+FAIL  (2/18 checks failed)
+  - REG.no_unintended_violation [1926.1053(b)(1)]: entity e5_dist violates 1926.1053(b)(1)
+    without a matching teaching point, so a correct trainee answer would be scored wrong
+  - REG.no_unintended_violation [1926.601(b)(4)]: entity e6_dist violates 1926.601(b)(4)
+    without a matching teaching point, so a correct trainee answer would be scored wrong
+```
+
+Two compliant distractors were accidentally made non-compliant by injected noise. A trainee
+who spotted either would have been marked wrong for being right. Drop `--no-gate` and both are
+caught and repaired on the second attempt.
+
+---
+
 ## Quickstart
 
 Python 3.10 or newer. Nothing to install.
@@ -109,7 +166,7 @@ python -m safesitegen generate --site utility_trench_corridor --seed 42 \
 # watch the curriculum adapt to a simulated trainee
 python -m safesitegen adapt --sessions 20 --seed 7
 
-python -m unittest discover -s tests        # 64 tests
+python -m unittest discover -s tests        # 92 tests
 ```
 
 Example output, with an injected fault caught and repaired:
@@ -144,7 +201,10 @@ points with their clauses, the trainee route, and the full validation report.
 | `validate.py` | The three-layer gate |
 | `learner.py` | Per-class Bayesian knowledge tracing, difficulty targeting, layout novelty |
 | `metrics.py` | Validity, coverage, entropy, expressive range, dependency-free SVG plots |
-| `export.py` | Unity scene contract and the offline viewer |
+| `prompt.py` | Natural language to specification, with an auditable parse trace |
+| `export.py` | Unity scene contract, plan viewer, walkable environment |
+| `environment.py` | First-person 3D training environment, no dependencies |
+| `unity/` | Unity importer and trainee controller against the same contract |
 
 ### The rule pack
 
@@ -172,9 +232,14 @@ pattern-match a label.
 
 ## Honest limitations
 
-- The default generator is a **stochastic grammar, not a language model**. It runs offline and
-  deterministically so experiments are reproducible without an API key. The constrained-decoding
-  adapter and its JSON schema are in `llm_backend.py` but are not exercised by the test suite.
+- The default generator and prompt parser are a **stochastic grammar and a lexicon, not a
+  language model**. Both run offline and deterministically so experiments are reproducible
+  without an API key, and neither can emit an identifier outside the taxonomy. The
+  constrained-decoding adapters and their JSON schemas are in `llm_backend.py` and
+  `prompt.py`, but are not exercised by the test suite.
+- The **3D environment is deliberately primitive**: boxes and capsules, no navmesh, no
+  animation, no XR rig. It exists to show that the verified contract drives a real interactive
+  scene, not to be a training product.
 - **Fault rates are synthetic.** The injection model stands in for hallucination so the gate can be
   scored; it is not a measurement of any real model's error rate.
 - **Site substrates are hand-specified**, not captured. The schema is identical to what an IFC
